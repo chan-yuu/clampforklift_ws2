@@ -1,0 +1,178 @@
+digraph {
+	compound=true;outputmode=nodesfirst;labeljust=l;nodesep=0.5;minlen=2;mclimit=5;clusterrank=local;ranksep=0.75;ordering="";
+subgraph "cluster_/SM_ROOT" {
+"color"="#00000000";
+"fillcolor"="#0000000F";
+"/SM_ROOT/__proxy__"  ["URL"="/SM_ROOT", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="SM_ROOT"];
+subgraph "cluster_/SM_ROOT/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT:succeed"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="succeed", "URL"="/SM_ROOT:succeed"];
+"/SM_ROOT:aborted"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="aborted", "URL"="/SM_ROOT:aborted"];
+"/SM_ROOT:preempted"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="preempted", "URL"="/SM_ROOT:preempted"];
+}
+"/SM_ROOT/INIT_STATE"  ["style"="filled,setlinewidth(5)", "color"="#5C7600FF", "fillcolor"="#C0F700FF", "label"="INIT_STATE", "URL"="/SM_ROOT/INIT_STATE"];
+subgraph "cluster_/SM_ROOT/SELF_INSPECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/SELF_INSPECTION/__proxy__"  ["URL"="/SM_ROOT/SELF_INSPECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="SELF_INSPECTION"];
+subgraph "cluster_/SM_ROOT/SELF_INSPECTION/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT/SELF_INSPECTION:all_finished"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="all_finished", "URL"="/SM_ROOT/SELF_INSPECTION:all_finished"];
+}
+"/SM_ROOT/SELF_INSPECTION/SET_WIDTH_INIT"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="SET_WIDTH_INIT", "URL"="/SM_ROOT/SELF_INSPECTION/SET_WIDTH_INIT"];
+"/SM_ROOT/SELF_INSPECTION/SET_FY_INIT"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="SET_FY_INIT", "URL"="/SM_ROOT/SELF_INSPECTION/SET_FY_INIT"];
+"/SM_ROOT/SELF_INSPECTION/SET_HEIGHT_INIT"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="SET_HEIGHT_INIT", "URL"="/SM_ROOT/SELF_INSPECTION/SET_HEIGHT_INIT"];
+"/SM_ROOT/SELF_INSPECTION/SET_WIDTH_INIT" -> "/SM_ROOT/SELF_INSPECTION:all_finished"  ["URL"="/SM_ROOT/SELF_INSPECTION/SET_WIDTH_INIT:finish:/SM_ROOT/SELF_INSPECTION/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/SELF_INSPECTION/SET_FY_INIT" -> "/SM_ROOT/SELF_INSPECTION:all_finished"  ["URL"="/SM_ROOT/SELF_INSPECTION/SET_FY_INIT:finish:/SM_ROOT/SELF_INSPECTION/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/SELF_INSPECTION/SET_HEIGHT_INIT" -> "/SM_ROOT/SELF_INSPECTION:all_finished"  ["URL"="/SM_ROOT/SELF_INSPECTION/SET_HEIGHT_INIT:finish:/SM_ROOT/SELF_INSPECTION/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/SELF_INSPECTION/__proxy__" -> "/SM_ROOT/SELF_INSPECTION/SET_WIDTH_INIT"  ["URL"="/SM_ROOT/SELF_INSPECTION/__proxy__::/SM_ROOT/SELF_INSPECTION/SET_WIDTH_INIT", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+"/SM_ROOT/SELF_INSPECTION/__proxy__" -> "/SM_ROOT/SELF_INSPECTION/SET_FY_INIT"  ["URL"="/SM_ROOT/SELF_INSPECTION/__proxy__::/SM_ROOT/SELF_INSPECTION/SET_FY_INIT", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+"/SM_ROOT/SELF_INSPECTION/__proxy__" -> "/SM_ROOT/SELF_INSPECTION/SET_HEIGHT_INIT"  ["URL"="/SM_ROOT/SELF_INSPECTION/__proxy__::/SM_ROOT/SELF_INSPECTION/SET_HEIGHT_INIT", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+}
+"/SM_ROOT/HANDLE_CLOUD_ORDER"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="HANDLE_CLOUD_ORDER", "URL"="/SM_ROOT/HANDLE_CLOUD_ORDER"];
+subgraph "cluster_/SM_ROOT/HW_SETUP" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/HW_SETUP/__proxy__"  ["URL"="/SM_ROOT/HW_SETUP", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="HW_SETUP"];
+subgraph "cluster_/SM_ROOT/HW_SETUP/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT/HW_SETUP:all_finished"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="all_finished", "URL"="/SM_ROOT/HW_SETUP:all_finished"];
+}
+"/SM_ROOT/HW_SETUP/SET_WIDTH_START"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="SET_WIDTH_START", "URL"="/SM_ROOT/HW_SETUP/SET_WIDTH_START"];
+"/SM_ROOT/HW_SETUP/SET_HEIGHT_START"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="SET_HEIGHT_START", "URL"="/SM_ROOT/HW_SETUP/SET_HEIGHT_START"];
+"/SM_ROOT/HW_SETUP/SET_WIDTH_START" -> "/SM_ROOT/HW_SETUP:all_finished"  ["URL"="/SM_ROOT/HW_SETUP/SET_WIDTH_START:finish:/SM_ROOT/HW_SETUP/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/HW_SETUP/SET_HEIGHT_START" -> "/SM_ROOT/HW_SETUP:all_finished"  ["URL"="/SM_ROOT/HW_SETUP/SET_HEIGHT_START:finish:/SM_ROOT/HW_SETUP/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/HW_SETUP/__proxy__" -> "/SM_ROOT/HW_SETUP/SET_WIDTH_START"  ["URL"="/SM_ROOT/HW_SETUP/__proxy__::/SM_ROOT/HW_SETUP/SET_WIDTH_START", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+"/SM_ROOT/HW_SETUP/__proxy__" -> "/SM_ROOT/HW_SETUP/SET_HEIGHT_START"  ["URL"="/SM_ROOT/HW_SETUP/__proxy__::/SM_ROOT/HW_SETUP/SET_HEIGHT_START", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+}
+subgraph "cluster_/SM_ROOT/PICKUP_SUB_SECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/PICKUP_SUB_SECTION/__proxy__"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="PICKUP_SUB_SECTION"];
+subgraph "cluster_/SM_ROOT/PICKUP_SUB_SECTION/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT/PICKUP_SUB_SECTION:pickup_sub_finish"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="pickup_sub_finish", "URL"="/SM_ROOT/PICKUP_SUB_SECTION:pickup_sub_finish"];
+}
+"/SM_ROOT/PICKUP_SUB_SECTION/CAMERA_TASK_1"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="CAMERA_TASK_1", "URL"="/SM_ROOT/PICKUP_SUB_SECTION/CAMERA_TASK_1"];
+"/SM_ROOT/PICKUP_SUB_SECTION/DISTANCE_CHECK"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="DISTANCE_CHECK", "URL"="/SM_ROOT/PICKUP_SUB_SECTION/DISTANCE_CHECK"];
+"/SM_ROOT/PICKUP_SUB_SECTION/GLOBAL_PICKUP_1"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_PICKUP_1", "URL"="/SM_ROOT/PICKUP_SUB_SECTION/GLOBAL_PICKUP_1"];
+"/SM_ROOT/PICKUP_SUB_SECTION/SET_WIDTH_PICKUP"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="SET_WIDTH_PICKUP", "URL"="/SM_ROOT/PICKUP_SUB_SECTION/SET_WIDTH_PICKUP"];
+"/SM_ROOT/PICKUP_SUB_SECTION/HEIGHT_RAISE"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="HEIGHT_RAISE", "URL"="/SM_ROOT/PICKUP_SUB_SECTION/HEIGHT_RAISE"];
+"/SM_ROOT/PICKUP_SUB_SECTION/CAMERA_TASK_1" -> "/SM_ROOT/PICKUP_SUB_SECTION/DISTANCE_CHECK"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION/CAMERA_TASK_1:finish:/SM_ROOT/PICKUP_SUB_SECTION/DISTANCE_CHECK", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/PICKUP_SUB_SECTION/DISTANCE_CHECK" -> "/SM_ROOT/PICKUP_SUB_SECTION/GLOBAL_PICKUP_1"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION/DISTANCE_CHECK:finish:/SM_ROOT/PICKUP_SUB_SECTION/GLOBAL_PICKUP_1", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/PICKUP_SUB_SECTION/GLOBAL_PICKUP_1" -> "/SM_ROOT/PICKUP_SUB_SECTION/SET_WIDTH_PICKUP"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION/GLOBAL_PICKUP_1:finish:/SM_ROOT/PICKUP_SUB_SECTION/SET_WIDTH_PICKUP", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/PICKUP_SUB_SECTION/SET_WIDTH_PICKUP" -> "/SM_ROOT/PICKUP_SUB_SECTION/HEIGHT_RAISE"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION/SET_WIDTH_PICKUP:finish:/SM_ROOT/PICKUP_SUB_SECTION/HEIGHT_RAISE", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/PICKUP_SUB_SECTION/HEIGHT_RAISE" -> "/SM_ROOT/PICKUP_SUB_SECTION:pickup_sub_finish"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION/HEIGHT_RAISE:finish:/SM_ROOT/PICKUP_SUB_SECTION/pickup_sub_finish", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/PICKUP_SUB_SECTION/__proxy__" -> "/SM_ROOT/PICKUP_SUB_SECTION/CAMERA_TASK_1"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION/__proxy__::/SM_ROOT/PICKUP_SUB_SECTION/CAMERA_TASK_1", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+}
+subgraph "cluster_/SM_ROOT/HW_BACKUP" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/HW_BACKUP/__proxy__"  ["URL"="/SM_ROOT/HW_BACKUP", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="HW_BACKUP"];
+subgraph "cluster_/SM_ROOT/HW_BACKUP/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT/HW_BACKUP:all_finished"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="all_finished", "URL"="/SM_ROOT/HW_BACKUP:all_finished"];
+}
+"/SM_ROOT/HW_BACKUP/GLOBAL_MOVE_BACK"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_MOVE_BACK", "URL"="/SM_ROOT/HW_BACKUP/GLOBAL_MOVE_BACK"];
+"/SM_ROOT/HW_BACKUP/HEIGHT_LOWER_WITH_DELAY"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="HEIGHT_LOWER_WITH_DELAY", "URL"="/SM_ROOT/HW_BACKUP/HEIGHT_LOWER_WITH_DELAY"];
+"/SM_ROOT/HW_BACKUP/GLOBAL_MOVE_BACK" -> "/SM_ROOT/HW_BACKUP:all_finished"  ["URL"="/SM_ROOT/HW_BACKUP/GLOBAL_MOVE_BACK:finish:/SM_ROOT/HW_BACKUP/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/HW_BACKUP/HEIGHT_LOWER_WITH_DELAY" -> "/SM_ROOT/HW_BACKUP:all_finished"  ["URL"="/SM_ROOT/HW_BACKUP/HEIGHT_LOWER_WITH_DELAY:finish:/SM_ROOT/HW_BACKUP/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/HW_BACKUP/__proxy__" -> "/SM_ROOT/HW_BACKUP/GLOBAL_MOVE_BACK"  ["URL"="/SM_ROOT/HW_BACKUP/__proxy__::/SM_ROOT/HW_BACKUP/GLOBAL_MOVE_BACK", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+"/SM_ROOT/HW_BACKUP/__proxy__" -> "/SM_ROOT/HW_BACKUP/HEIGHT_LOWER_WITH_DELAY"  ["URL"="/SM_ROOT/HW_BACKUP/__proxy__::/SM_ROOT/HW_BACKUP/HEIGHT_LOWER_WITH_DELAY", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+}
+"/SM_ROOT/CAMERA_TASK_2"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="CAMERA_TASK_2", "URL"="/SM_ROOT/CAMERA_TASK_2"];
+subgraph "cluster_/SM_ROOT/HW_PLAN_SECOND_PICKUP" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="HW_PLAN_SECOND_PICKUP"];
+subgraph "cluster_/SM_ROOT/HW_PLAN_SECOND_PICKUP/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP:all_finished"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="all_finished", "URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP:all_finished"];
+}
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/GLOBAL_PICKUP_2"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_PICKUP_2", "URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP/GLOBAL_PICKUP_2"];
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/HEIGHT_ADJUST_SECOND"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="HEIGHT_ADJUST_SECOND", "URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP/HEIGHT_ADJUST_SECOND"];
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/GLOBAL_PICKUP_2" -> "/SM_ROOT/HW_PLAN_SECOND_PICKUP:all_finished"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP/GLOBAL_PICKUP_2:finish:/SM_ROOT/HW_PLAN_SECOND_PICKUP/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/HEIGHT_ADJUST_SECOND" -> "/SM_ROOT/HW_PLAN_SECOND_PICKUP:all_finished"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP/HEIGHT_ADJUST_SECOND:finish:/SM_ROOT/HW_PLAN_SECOND_PICKUP/all_finished", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__" -> "/SM_ROOT/HW_PLAN_SECOND_PICKUP/GLOBAL_PICKUP_2"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__::/SM_ROOT/HW_PLAN_SECOND_PICKUP/GLOBAL_PICKUP_2", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__" -> "/SM_ROOT/HW_PLAN_SECOND_PICKUP/HEIGHT_ADJUST_SECOND"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__::/SM_ROOT/HW_PLAN_SECOND_PICKUP/HEIGHT_ADJUST_SECOND", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+}
+subgraph "cluster_/SM_ROOT/STACK_AND_MOVE_SECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/STACK_AND_MOVE_SECTION/__proxy__"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="STACK_AND_MOVE_SECTION"];
+subgraph "cluster_/SM_ROOT/STACK_AND_MOVE_SECTION/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT/STACK_AND_MOVE_SECTION:stack_and_move_finish"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="stack_and_move_finish", "URL"="/SM_ROOT/STACK_AND_MOVE_SECTION:stack_and_move_finish"];
+}
+subgraph "cluster_/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION/__proxy__"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="STACK_SECTION"];
+}
+"/SM_ROOT/STACK_AND_MOVE_SECTION/MOVE_BACK_DOWN"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="MOVE_BACK_DOWN", "URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/MOVE_BACK_DOWN"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/HEIGHT_LOWER_FINAL"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="HEIGHT_LOWER_FINAL", "URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/HEIGHT_LOWER_FINAL"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/GLOBAL_MOVE_FORWARD"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_MOVE_FORWARD", "URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/GLOBAL_MOVE_FORWARD"];
+subgraph "cluster_/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION/__proxy__"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="CLOSE_SECTION"];
+}
+"/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION/__proxy__" -> "/SM_ROOT/STACK_AND_MOVE_SECTION/MOVE_BACK_DOWN"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION:stack_finish:/SM_ROOT/STACK_AND_MOVE_SECTION/MOVE_BACK_DOWN", "fontsize"="12", "label"="", "xlabel"="stack_finish", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/MOVE_BACK_DOWN" -> "/SM_ROOT/STACK_AND_MOVE_SECTION/HEIGHT_LOWER_FINAL"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/MOVE_BACK_DOWN:finish:/SM_ROOT/STACK_AND_MOVE_SECTION/HEIGHT_LOWER_FINAL", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/HEIGHT_LOWER_FINAL" -> "/SM_ROOT/STACK_AND_MOVE_SECTION/GLOBAL_MOVE_FORWARD"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/HEIGHT_LOWER_FINAL:finish:/SM_ROOT/STACK_AND_MOVE_SECTION/GLOBAL_MOVE_FORWARD", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/GLOBAL_MOVE_FORWARD" -> "/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION/__proxy__"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/GLOBAL_MOVE_FORWARD:finish:/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION/__proxy__" -> "/SM_ROOT/STACK_AND_MOVE_SECTION:stack_and_move_finish"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION:close_finish:/SM_ROOT/STACK_AND_MOVE_SECTION/stack_and_move_finish", "fontsize"="12", "label"="", "xlabel"="close_finish", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/STACK_AND_MOVE_SECTION/CLOSE_SECTION", "color"="#00000055"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/__proxy__" -> "/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION/__proxy__"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION/__proxy__::/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/STACK_AND_MOVE_SECTION/STACK_SECTION"];
+}
+"/SM_ROOT/GLOBAL_PICKUP_3"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_PICKUP_3", "URL"="/SM_ROOT/GLOBAL_PICKUP_3"];
+"/SM_ROOT/ADJUST_HEADING"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="ADJUST_HEADING", "URL"="/SM_ROOT/ADJUST_HEADING"];
+"/SM_ROOT/ADJUST_DESIGN_HEADING"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="ADJUST_DESIGN_HEADING", "URL"="/SM_ROOT/ADJUST_DESIGN_HEADING"];
+"/SM_ROOT/GLOBAL_PICKUP_FINAL"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_PICKUP_FINAL", "URL"="/SM_ROOT/GLOBAL_PICKUP_FINAL"];
+"/SM_ROOT/FINISH"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="FINISH", "URL"="/SM_ROOT/FINISH"];
+"/SM_ROOT/INIT_STATE" -> "/SM_ROOT/SELF_INSPECTION/__proxy__"  ["URL"="/SM_ROOT/INIT_STATE:success:/SM_ROOT/SELF_INSPECTION", "fontsize"="12", "label"="", "xlabel"="success", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/SELF_INSPECTION"];
+"/SM_ROOT/SELF_INSPECTION:all_finished" -> "/SM_ROOT/HW_SETUP/__proxy__"  ["URL"="/SM_ROOT/SELF_INSPECTION:all_finished:/SM_ROOT/HW_SETUP", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/HW_SETUP"];
+"/SM_ROOT/HANDLE_CLOUD_ORDER" -> "/SM_ROOT/HW_SETUP/__proxy__"  ["URL"="/SM_ROOT/HANDLE_CLOUD_ORDER:finish:/SM_ROOT/HW_SETUP", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/HW_SETUP"];
+"/SM_ROOT/HW_SETUP:all_finished" -> "/SM_ROOT/PICKUP_SUB_SECTION/__proxy__"  ["URL"="/SM_ROOT/HW_SETUP:all_finished:/SM_ROOT/PICKUP_SUB_SECTION", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/PICKUP_SUB_SECTION"];
+"/SM_ROOT/PICKUP_SUB_SECTION:pickup_sub_finish" -> "/SM_ROOT/HW_BACKUP/__proxy__"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION:pickup_sub_finish:/SM_ROOT/HW_BACKUP", "fontsize"="12", "label"="", "xlabel"="pickup_sub_finish", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/HW_BACKUP"];
+"/SM_ROOT/HW_BACKUP:all_finished" -> "/SM_ROOT/CAMERA_TASK_2"  ["URL"="/SM_ROOT/HW_BACKUP:all_finished:/SM_ROOT/CAMERA_TASK_2", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)"];
+"/SM_ROOT/CAMERA_TASK_2" -> "/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__"  ["URL"="/SM_ROOT/CAMERA_TASK_2:finish:/SM_ROOT/HW_PLAN_SECOND_PICKUP", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/HW_PLAN_SECOND_PICKUP"];
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP:all_finished" -> "/SM_ROOT/STACK_AND_MOVE_SECTION/__proxy__"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP:all_finished:/SM_ROOT/STACK_AND_MOVE_SECTION", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/STACK_AND_MOVE_SECTION"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION:stack_and_move_finish" -> "/SM_ROOT/GLOBAL_PICKUP_3"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION:stack_and_move_finish:/SM_ROOT/GLOBAL_PICKUP_3", "fontsize"="12", "label"="", "xlabel"="stack_and_move_finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/GLOBAL_PICKUP_3" -> "/SM_ROOT/ADJUST_HEADING"  ["URL"="/SM_ROOT/GLOBAL_PICKUP_3:finish:/SM_ROOT/ADJUST_HEADING", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/ADJUST_HEADING" -> "/SM_ROOT/GLOBAL_PICKUP_FINAL"  ["URL"="/SM_ROOT/ADJUST_HEADING:finish:/SM_ROOT/GLOBAL_PICKUP_FINAL", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/ADJUST_DESIGN_HEADING" -> "/SM_ROOT/GLOBAL_PICKUP_FINAL"  ["URL"="/SM_ROOT/ADJUST_DESIGN_HEADING:finish:/SM_ROOT/GLOBAL_PICKUP_FINAL", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/GLOBAL_PICKUP_FINAL" -> "/SM_ROOT/FINISH"  ["URL"="/SM_ROOT/GLOBAL_PICKUP_FINAL:finish:/SM_ROOT/FINISH", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/FINISH" -> "/SM_ROOT:succeed"  ["URL"="/SM_ROOT/FINISH:succeed:/SM_ROOT/succeed", "fontsize"="12", "label"="", "xlabel"="succeed", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/__proxy__" -> "/SM_ROOT/INIT_STATE"  ["URL"="/SM_ROOT/__proxy__::/SM_ROOT/INIT_STATE", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+}
+
+}

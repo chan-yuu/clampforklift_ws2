@@ -1,0 +1,49 @@
+control:
+
+  wire_pub_node:
+    ifname: "can0"
+    Rate: 100
+    openloop: 0
+
+  stanley_controller:
+    kp: 1.0
+    max_steering_angle: 1.13 # 70度
+    wheelbase: 1.77
+
+  control_main_node:
+    max_steering_angle: 70
+    pre_index: 10 #档位育苗 只用于档位
+    GlobalTargetSpeed: 0.5 #全局规划目标速度
+    LocalTargetSpeed: 0.5  #局部规划目标速度
+    have_local_: false  #true时只执行局部规划，全局路径发也不影响； 为false时，先执行全局再执行局部
+    debug_mode: false
+    DeletedPathSize: 6 #删除路径点个数
+    
+can_feedback:
+  ifname: "can0"
+  loopRate: 100
+
+
+can_pub:
+    ifname: "can0"
+    Rate: 100
+    openloop: 0
+    wheel2steering: 1
+    debug_mode: true
+
+    openloop:
+      debug_mode: false
+      IPC_En: 0
+      Target_velocity: 0  #//加包车协议对应的油门开合度 范围0-65,精度0.1％
+      Target_gear: 0  #0:N  1:R  3:D
+      Target_steering_angle: 0
+      brake_enable: 0
+      value_brake: 0
+      FY: 0               #0不控制 1俯仰
+      FY_Position: 0  
+      UpDown: 0
+      UpDown_Position: 0  #0-4482
+      work_mode: 0 #//作业控制模式  0：未选中任何模式 1：夹抱模式 2：横移模式 
+      clamp_width: 0 # 夹抱宽度 0-1352mm,精度1mm
+      lateral_movement_position_mm: -0 #横移位置 （最大最小值参考反馈，左正右负）,精度1mm,signed类型
+      TurnLight: 0 #//转向灯控制  0x00：归位；  0x01：左转向；  0x02：右转向

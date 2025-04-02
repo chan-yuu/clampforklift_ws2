@@ -1,0 +1,25 @@
+<launch>
+    <!-- step 1查询雷达数据 -->
+    <!-- <node pkg="local_map" type="lidar_range.py" name="lidar_range" output="screen" /> -->
+    
+    <node name="obstacle_perception" pkg="local_map" type="obstacle_perception_node" output="screen">
+    
+        <param name="x_min" value="-2" />
+        <param name="x_max" value="2.8" />
+        <param name="y_min" value="-1" />
+        <param name="y_max" value="1" />
+
+        <param name="z_min" value="-2.2" />
+        <param name="z_max" value="1" />
+    </node>
+
+    <!-- <node pkg="local_map" type="local_map.py" name="local_map_pub" output="screen">
+        <param name="x_min" value="-2" />
+        <param name="x_max" value="2.8" />
+        <param name="y_min" value="-1" />
+        <param name="y_max" value="1" />
+
+        <param name="z_min" value="-2.2" />
+        <param name="z_max" value="1" />
+    </node> -->
+</launch>

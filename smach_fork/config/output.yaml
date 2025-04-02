@@ -1,0 +1,10 @@
+- updown_control:
+    target: 50.0
+- updown_control:
+    target: -100.0
+- clamp_control:
+    target: -200.0
+- clamp_control:
+    target: 50.0
+- updown_control:
+    target: 200.0

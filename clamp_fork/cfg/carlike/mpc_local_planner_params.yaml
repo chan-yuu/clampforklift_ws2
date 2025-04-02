@@ -1,0 +1,147 @@
+MpcLocalPlannerROS:
+
+  # odom_topic: 定义机器人里程计的主题，用于获取机器人当前的速度和位置信息。
+  odom_topic: odom
+    
+  ## Robot settings
+  robot:
+    # type: 机器人模型的类型，这里使用的是 "simple_car" 模型，表示一个简单的汽车模型。
+    type: "simple_car"
+    simple_car:
+      # wheelbase: 车轮轴距，单位为米。
+      wheelbase: 1.868
+      # front_wheel_driving: 如果为 True，则前轮驱动，否则为后轮驱动。
+      front_wheel_driving: False
+      # max_vel_x: 机器人的最大前进速度，单位为 m/s。
+      max_vel_x: 1.0
+      # max_vel_x_backwards: 机器人的最大后退速度，单位为 m/s。
+      max_vel_x_backwards: 0.2
+      # max_steering_angle: 机器人的最大转向角，单位为弧度。
+      max_steering_angle: 1.4
+      # acc_lim_x: 最大前进加速度限制，单位为 m/s²。
+      acc_lim_x: 0.5
+      # dec_lim_x: 最大减速限制，单位为 m/s²。
+      dec_lim_x: 0.5
+      # max_steering_rate: 最大转向速度，单位为弧度/秒。
+      max_steering_rate: 0.5
+
+  ## Footprint model for collision avoidance
+  footprint_model: # 定义用于碰撞避免的机器人轮廓模型
+    type: "line"  # 轮廓模型的类型，这里使用的是线型（line）
+    radius: 0.2  # 如果轮廓类型是“circular”，则定义机器人的半径，单位为米。
+    line_start: [0.0, 0.0]  # 如果轮廓类型是“line”，定义线的起始点，单位为米。
+    line_end: [0.4, 0.0]  # 如果轮廓类型是“line”，定义线的终点，单位为米。
+    front_offset: 0.2  # 如果轮廓类型是“two_circles”，定义前圆心的偏移量，单位为米。
+    front_radius: 0.2  # 如果轮廓类型是“two_circles”，定义前圆的半径，单位为米。
+    rear_offset: 0.2  # 如果轮廓类型是“two_circles”，定义后圆心的偏移量，单位为米。
+    rear_radius: 0.2  # 如果轮廓类型是“two_circles”，定义后圆的半径，单位为米。
+    vertices: [ [0.25, -0.05], [0.18, -0.05], [0.18, -0.18], [-0.19, -0.18], [-0.25, 0], [-0.19, 0.18], [0.18, 0.18], [0.18, 0.05], [0.25, 0.05] ] 
+    # 如果轮廓类型是“polygon”，定义多边形顶点的列表。
+    is_footprint_dynamic: False  # 设定轮廓是否动态变化。
+
+  ## Collision avoidance
+  collision_avoidance:
+    # min_obstacle_dist: 与障碍物的最小安全距离，单位为米。
+    min_obstacle_dist: 0.27
+    # enable_dynamic_obstacles: 是否启用动态障碍物检测。
+    enable_dynamic_obstacles: False
+    # force_inclusion_dist: 强制包含障碍物的距离，单位为米。
+    force_inclusion_dist: 0.5
+    # cutoff_dist: 截断距离，即在此距离之外的障碍物将被忽略，单位为米。
+    cutoff_dist: 2.5 
+    # include_costmap_obstacles: 是否包含代价地图中的障碍物。
+    include_costmap_obstacles: True
+    # costmap_obstacles_behind_robot_dist: 在机器人后方多远距离内包含障碍物，单位为米。
+    costmap_obstacles_behind_robot_dist: 1.0
+    # collision_check_no_poses: 在碰撞检查中考虑的位姿数量。
+    collision_check_no_poses: 5
+    
+
+  ## Planning grid 
+  grid:
+    # type: 规划网格的类型，这里使用的是“fd_grid”（前向差分网格）。
+    type: "fd_grid"
+    # grid_size_ref: 网格的参考大小。
+    grid_size_ref: 20
+    # dt_ref: 参考时间步长，单位为秒。
+    dt_ref: 0.3
+    # xf_fixed: 终端状态是否固定，对应 [x, y, yaw]。
+    xf_fixed: [True, True, True]
+    # warm_start: 是否启用暖启动（warm start），可以加快规划时间。
+    warm_start: True
+    # collocation_method: 配置方法，这里使用的是“前向差分法”。
+    collocation_method: "forward_differences"
+    # cost_integration_method: 成本积分方法，这里使用的是“左和”。
+    cost_integration_method: "left_sum"
+    variable_grid:
+      enable: True  # 是否启用可变网格。
+      min_dt: 0.0  # 最小时间步长。
+      max_dt: 10.0  # 最大时间步长。
+      grid_adaptation:
+        enable: True  # 是否启用网格自适应。
+        dt_hyst_ratio: 0.1  # 网格适应时的滞后系数。
+        min_grid_size: 2  # 最小网格大小。
+        max_grid_size: 50  # 最大网格大小。
+
+  ## Planning options
+  planning:
+    objective:
+      type: "minimum_time" # 规划的目标类型，这里使用的是“最小时间”
+    terminal_cost:
+      type: "none"  # 终端成本类型，这里设置为“无”
+    terminal_constraint:
+      type: "none"  # 终端约束类型，这里设置为“无”
+
+  ## Controller options
+  controller:
+    # outer_ocp_iterations: 外部 OCP（最优控制问题）迭代次数。
+    outer_ocp_iterations: 1
+    # xy_goal_tolerance: 目标位姿的 XY 容忍度，单位为米。
+    xy_goal_tolerance: 0.35
+    # yaw_goal_tolerance: 目标位姿的偏航角容忍度，单位为弧度。
+    yaw_goal_tolerance: 0.15
+    # global_plan_overwrite_orientation: 是否允许全局规划覆盖方向。
+    global_plan_overwrite_orientation: True
+    # global_plan_prune_distance: 修剪全局规划时的距离，单位为米。
+    global_plan_prune_distance: 1.0
+    # allow_init_with_backward_motion: 是否允许以倒车运动初始化。
+    allow_init_with_backward_motion: True
+    # max_global_plan_lookahead_dist: 全局规划的最大前瞻距离，单位为米。
+    max_global_plan_lookahead_dist: 1.5 
+    # force_reinit_new_goal_dist: 强制重新初始化的距离阈值，单位为米。
+    force_reinit_new_goal_dist: 1.0
+    # force_reinit_new_goal_angular: 强制重新初始化的角度阈值，单位为弧度。
+    force_reinit_new_goal_angular: 1.57
+    # prefer_x_feedback: 是否优先使用 x 方向反馈。
+    prefer_x_feedback: False
+    # publish_ocp_results: 是否发布 OCP 结果。
+    publish_ocp_results: False
+    
+  ## Solver settings
+  solver:
+    # type: 规划求解器的类型，这里使用的是 IPOPT 求解器。
+    type: "ipopt"
+    ipopt:
+      # iterations: 最大迭代次数。
+      iterations: 100
+      # max_cpu_time: 最大 CPU 时间限制，单位为秒，-1 表示没有限制。
+      max_cpu_time: -1.0
+      ipopt_numeric_options:
+        # tol: IPOPT 求解器的容差。
+        tol: 1e-4
+      ipopt_string_options:
+        # linear_solver: IPOPT 中使用的线性求解器类型。
+        linear_solver: "mumps" 
+        # hessian_approximation: 选择 Hessian 矩阵的近似方法，这里使用的是“有限记忆”方法。
+        hessian_approximation: "limited-memory" # exact/limited-memory, WARNING 'exact' does currently not work well with the carlike model
+    lsq_lm:
+      iterations: 10  # 最小二乘法-勒文贝格-马夸尔特法的最大迭代次数。
+      weight_init_eq: 2  # 初始化等式约束的权重。
+      weight_init_ineq: 2  # 初始化不等式约束的权重。
+      weight_init_bounds: 2  # 初始化边界约束的权重。
+      weight_adapt_factor_eq: 1.5  # 等式约束的权重适应因子。
+      weight_adapt_factor_ineq: 1.5  # 不等式约束的权重适应因子。
+      weight_adapt_factor_bounds: 1.5  # 边界约束的权重适应因子。
+      weight_adapt_max_eq: 500  # 等式约束的最大适应权重。
+      weight_adapt_max_ineq: 500  # 不等式约束的最大适应权重。
+      weight_adapt_max_bounds: 500  # 边界约束的最大适应权重。

@@ -1,0 +1,409 @@
+<?xml version="1.0"?>
+<!-- robot的name -->
+<robot name="forklift"  xmlns:xacro="http://ros.org/wiki/xacro">
+    
+    <!-- 导入gazebo的插件来控制gazebo中的叉头升降 -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        </plugin>
+    </gazebo>
+
+    <!-- <xacro:arg name="robot_namespace" default="/" />  -->
+
+    <!-- 属性封装 -->
+    <xacro:property name="M_PI" value="3.14159"/>
+
+    <!-- 主要用于gazebo中的碰撞监测 -->
+    <xacro:property name="base_x_size" value="0.9250000" />
+    <xacro:property name="base_y_size" value="0.380000" />
+    <xacro:property name="base_z_size" value="0.210000" />
+
+    
+    <!-- 轴距 （左右）车轮间距 前后车轮的垂直误差 -->
+    <xacro:property name="wheelbase" value="1.5" />
+    <xacro:property name="track" value="0.8" />
+    <xacro:property name="wheel_vertical_offset" value="-0.0702" />
+
+    <xacro:property name="support_length" value="4.0" />
+
+    <xacro:property name="wheel_length" value="1.1653e-01" />
+    <xacro:property name="wheel_radius" value="1.6459e-01" />
+
+    <xacro:arg name="gpu" default="true"/>
+    <xacro:property name="gpu" value="$(arg gpu)" />
+    <xacro:arg name="organize_cloud" default="true"/>
+    <xacro:property name="organize_cloud" value="$(arg organize_cloud)" />
+    
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+    </material>
+    
+    <!-- 自定义材质 -->
+    <material name="CustomGrey">
+        <color rgba="0.3 0.3 0.2 1"/>
+        <ambient>0.2 0.2 0.2 1</ambient>
+        <diffuse>0.5 0.5 0.5 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+        <emissive>0.0 0.0 0.0 1</emissive>
+    </material>
+    <material name="CustomDarkGrey">
+        <color rgba="0.3 0.3 0.3 1"/>
+        <ambient>0.1 0.1 0.1 1</ambient>
+        <diffuse>0.3 0.3 0.3 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+        <emissive>0.0 0.0 0.0 1</emissive>
+    </material>
+
+    <!-- 底盘的轮子 -->
+    <!-- <xacro:include filename="$(find forklift_gazebo)/urdf/scout_wheel_type1.xacro" /> -->
+    <!-- <xacro:include filename="$(find forklift_gazebo)/urdf/scout_wheel_type2.xacro" /> -->
+    <xacro:include filename="$(find forklift_gazebo)/urdf/inertial.xacro" />
+
+
+    <!-- D435i RGB-D相机相关 -->
+    <xacro:include filename="$(find realsense_ros_gazebo)/xacro/depthcam.xacro"/>
+    <xacro:realsense_d435 sensor_name="camera" parent_link="base_link" rate="30.0">
+    <origin rpy="0 0 0" xyz="1.2 0 0.25"/>
+    </xacro:realsense_d435>
+    
+
+    <!-- support是雷达支架，链接的也是这个xacro  -->
+    <!-- VLP16 激光雷达 -->
+    <!-- <xacro:include filename="$(find forklift_gazebo)/urdf/laser_support.xacro" />
+    <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+    <xacro:VLP-16 parent="support" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+          <origin xyz="0 0 1.5" rpy="0 0 0" />
+    </xacro:VLP-16> -->
+
+    <!-- 如果使用32线的lidar -->
+    <!-- 32线雷达 -->
+    <!-- <xacro:include filename="$(find forklift_gazebo)/urdf/laser_support.xacro" />
+	<xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
+  	<xacro:HDL-32E parent="support" name="velodyne" topic="/velodyne_points" hz="10" samples="4000" gpu="${gpu}">
+    		<origin xyz="0 0 1.5" rpy="0 0 0" />
+  	</xacro:HDL-32E> -->
+
+    <!-- 如果是二维的scan -->
+    <!-- Lidar -->
+    <link name = "laser">
+        <visual>
+        <geometry>
+            <!-- <box size="0.1 0.1 0.1"/> -->
+            <cylinder length="0.001" radius="0.001"/>
+        </geometry>
+        <origin rpy = "0 0 0" xyz = "0 0 0"/>
+        </visual>
+    </link>
+    <!-- 1.7 0 -0.5 -->
+    <joint name="laser_joint" type="fixed">
+        <origin xyz="1.7 0 -0.5" rpy="0 0 0"  /> <!--pos-->
+        <parent link="base_link" />
+        <child link="laser" />
+    </joint>
+
+    <!-- Gazebo plugin for RpLidar A2 -->
+    <gazebo reference="laser">
+    <sensor type="ray" name="rplidar_sensor">
+        <pose>0 0 0.0 0 0 0</pose>
+        <visualize>true</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+        <scan>
+            <horizontal>
+            <samples>360</samples>
+            <!-- 1° 360次采样 -->
+            <resolution>1</resolution>
+            <!-- <min_angle>-3.14159265</min_angle>
+            <max_angle>3.14159265</max_angle> -->
+            <min_angle>-1.57</min_angle>
+            <max_angle>1.57</max_angle>
+            </horizontal>
+        </scan>
+        <range>
+            <min>0.24</min>
+            <max>10.0</max>
+            <resolution>0.01</resolution>
+        </range>
+        <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+        </noise>
+        </ray>
+        <plugin name="rplidar_ros_controller" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>laser</frameName>
+        </plugin>
+    </sensor>
+    </gazebo>
+
+    <!-- IMU 模块 -->
+    <xacro:include filename="$(find forklift_gazebo)/urdf/imu.xacro"/>
+    <xacro:imu sensor_name="imu" parent_link="base_link">
+    <origin rpy="0 0 0" xyz="-0.03 0 ${base_z_size/2}"/>
+    </xacro:imu>
+
+    <gazebo>
+        <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+            <publishOdometryTf>true</publishOdometryTf>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <odometryRate>10.0</odometryRate>
+            <robotBaseFrame>base_footprint</robotBaseFrame>
+            <cmdTimeout>1.0</cmdTimeout> <!-- 添加这一行，设置超时时间为1秒 -->
+        </plugin>
+    </gazebo>
+
+    <!-- Base link  底盘 -->
+    <link name='base_link'>
+        <inertial>
+            <mass value="1000"/>
+            <inertia ixx="30.8" ixy="0" ixz="0" iyy="76.8" iyz="0" izz="67.8"/>
+        </inertial>
+        <visual name='visual'>
+            <origin xyz="0.0 -0.0 0.0" rpy="0 0 0" />
+            <geometry>
+                <!-- <mesh filename="package://forklift_gazebo/meshes/fork_base_link.dae"/> -->
+                <mesh filename="package://forklift_gazebo/meshes/new/last_main.stl"/>
+            </geometry>
+            <material name="CustomGrey"/>
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <box size="2.6 1.13 1.538"/>
+                <!-- <mesh filename="package://forklift_gazebo/meshes/new/last_main.stl"/> -->
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- <gazebo reference="base_link"> -->
+        <!-- 与rviz不同（3）：重新设置颜色 -->
+        <!-- <material>Gazebo/RedGlow</material> -->
+    <!-- </gazebo> -->
+
+    <!-- <gazebo reference="base_link">
+        <material>
+            <script>
+                <uri>package://forklift_gazebo/materials/scripts/gazebo.material</uri>
+                <name>Custom/RedGlow</name>
+            </script>
+            <texture>
+                <diffuse>package://forklift_gazebo/materials/textures/Travertine003.png</diffuse>
+            </texture>
+        </material>
+    </gazebo> -->
+
+    <gazebo reference="base_link">
+        <material>Custom/CustomTexture</material>
+    </gazebo>
+
+    <!-- 左右的fork -->
+    <link name='fork_left'>
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx="0.166667" ixy="0" ixz="0" iyy="0.166667" iyz="0" izz="0.166667"/>
+        </inertial>
+        <visual name='visual'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <!-- <origin xyz="2.0 0.25 -0.35" rpy="0 0 0" /> -->
+            <geometry>
+                <!-- <box size="1.21 0.121 0.1"/> -->
+                <mesh filename="package://forklift_gazebo/meshes/new/fork_last.stl"/>
+            </geometry>
+            <!-- <material name="CustomGrey"/> -->
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <box size="1.22 0.121 0.043"/>
+                <!-- <mesh filename="package://forklift_gazebo/meshes/new/fork_last.dae"/> -->
+            </geometry>
+        </collision>
+    </link>
+
+    <link name='fork_right'>
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx="0.166667" ixy="0" ixz="0" iyy="0.166667" iyz="0" izz="0.166667"/>
+        </inertial>
+        <visual name='visual'>
+            <!-- <origin xyz="2.0 -0.25 -0.35" rpy="0 0 0" /> -->
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <!-- <box size="1.21 0.121 0.1"/> -->
+                <mesh filename="package://forklift_gazebo/meshes/new/fork_last.stl"/>
+            </geometry>
+            <!-- <material name="CustomGrey"/> -->
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <box size="1.22 0.121 0.043"/>
+                <!-- <mesh filename="package://forklift_gazebo/meshes/new/fork_last.dae"/> -->
+            </geometry>
+        </collision>
+    </link>
+
+    <gazebo reference="fork_left">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+    <gazebo reference="fork_right">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+    <!-- 定义fork_left_pitch和fork_right_pitch的链接 -->
+
+    <!-- 现在将两个fork单独考虑 -->
+    <!-- 并且是同步的升降高度和速度 -->
+    <!-- 添加控制叉头升降和俯仰的关节 -->
+
+
+    <!-- 定义fork_left_pitch和fork_right_pitch的链接 -->
+    <!-- <link name='fork_left_pitch_link'>
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx="0.166667" ixy="0" ixz="0" iyy="0.166667" iyz="0" izz="0.166667"/>
+        </inertial>
+        <visual name='visual'>
+            <origin xyz="2.0 -0.25 -0.35" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="CustomGrey"/>
+        </visual>
+    </link> -->
+
+    <!-- <link name='fork_right_pitch_link'>
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx="0.166667" ixy="0" ixz="0" iyy="0.166667" iyz="0" izz="0.166667"/>
+        </inertial>
+        <visual name='visual'>
+            <origin xyz="2.0 -0.25 -0.35" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="CustomGrey"/>
+        </visual>
+    </link> -->
+
+    <!-- <joint name="fork_left_pitch_link_to_fork_left" type="fixed">
+        <parent link="fork_left_pitch_link"/>
+        <child link="fork_left"/>
+        <origin xyz="0 -0.0 -0.0"/>
+    </joint> -->
+
+
+    <!-- <joint name="fork_right_pitch_link_to_fork_right" type="fixed">
+        <parent link="fork_right_pitch_link"/>
+        <child link="fork_right"/>
+        <origin xyz="0 -0.0 -0.0"/>
+    </joint> -->
+
+
+    <!-- 升降系统 -->
+    <joint name="base_link_to_fork_left" type="prismatic">
+        <parent link="base_link"/>
+        <child link="fork_left"/>
+        <limit lower="-0.60" upper="3.5" velocity="0.5" effort="3000"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="1.9 0.25 -0.55"/>
+    </joint>
+
+    <joint name="base_link_to_fork_right" type="prismatic">
+        <parent link="base_link"/>
+        <child link="fork_right"/>
+        <limit lower="-0.60" upper="3.5" velocity="0.5" effort="3000"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="1.9 -0.25 -0.55"/>
+    </joint>
+
+    <!-- Transmission for the prismatic joints -->
+    <transmission name="base_link_to_fork_left_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="base_link_to_fork_left">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="base_link_to_fork_left_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="base_link_to_fork_right_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="base_link_to_fork_right">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="base_link_to_fork_right_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <!-- 俯仰系统 -->
+    <!-- 做不到同时控制fork的俯仰和升降 -->
+    <!-- <joint name="fork_left_pitch" type="revolute">
+        <parent link="base_link"/>
+        <child link="fork_left"/>
+        <limit lower="-1.57" upper="1.57" velocity="1.0" effort="1000"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="0 0.0 -0.0"/>
+    </joint>
+
+    <joint name="fork_right_pitch" type="revolute">
+        <parent link="base_link"/>
+        <child link="fork_right"/>
+        <limit lower="-1.57" upper="1.57" velocity="1.0" effort="1000"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="0 0.0 -0.0"/>
+    </joint> -->
+
+
+    <!-- Transmission for the revolute joints -->
+    <!-- <transmission name="fork_left_pitch_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="fork_left_pitch">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="fork_left_pitch_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="fork_right_pitch_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="fork_right_pitch">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="fork_right_pitch_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission> -->
+
+
+    <link name="base_footprint"/>
+    <joint name="base_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_footprint" />
+        <child link="base_link" />
+    </joint>
+
+    <link name="inertial_link">
+        <inertial>
+            <mass value="40" />
+            <origin xyz="0.0 0.0 0.0" />
+            <inertia ixx="2.288641" ixy="0" ixz="0" iyy="5.103976" iyz="0" izz="3.431465" />
+        </inertial>
+    </link>
+    <joint name="inertial_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="inertial_link" />
+    </joint>
+
+</robot>

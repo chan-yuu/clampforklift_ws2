@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="rviz" default="true" />
+  <arg name="delaunayedges_publisher" default="delaunayedges_publisher" />
+  <arg name="circumcenter_publisher" default="circumcenter_publisher" />
+  <arg name="frame_id" default="delaunay" />
+  <arg name="rightedges_publisher" default="rightedges_publisher" />
+  <arg name="rightpoints_publisher" default="rightpoints_publisher" />
+  <arg name="path_publisher" default="path_publisher" />
+  <arg name="sub" default="sub" />
+  <arg name="model" default="$(find forklift_gazebo)/urdf/clamp_fork_new.xacro" />
+  <!-- <arg name = "model_xacro" default = "$(find forklift_gazebo)/urdf/clamp_fork_new.xacro" /> -->
+
+  <node pkg="tf" type="static_transform_publisher" name="camera_tf" args="-1.95 -0.55 2.0 -1.58 0 -1.58 /odom /camera_link 100"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- <arg name="world_name" value="$(find ground_world)/worlds/acceleration.world"/>  -->
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
+    <!-- <remap from="robot_description" to="different_robot_description" /> -->
+    <!-- <remap from="joint_states" to="/prius/joint_states" /> -->
+  </node>
+
+  <!-- <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" /> -->
+
+  <param name="robot_description" textfile="$(arg model)"/>
+
+  <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x -43 -y 0 -z 0.1 -Y 0 -model prius"/> -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x -0 -y 0 -z 0.0 -model prius"/>
+
+  <!-- <group if="$(arg rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find ground_world)/rviz/sim.rviz"  required="true"/>
+  </group> -->
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find forklift_gazebo)/config/detect.rviz" /> 
+
+</launch>

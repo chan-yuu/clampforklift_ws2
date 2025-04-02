@@ -1,0 +1,11 @@
+<launch>
+    
+    <rosparam file="$(find local_plan)/config/planner_params.yaml" command="load"/>
+
+    <node pkg="local_plan" type="local_plan" name="local_plan" output="screen">
+        <remap from="global_map" to="map"/>
+    </node>
+
+    <!-- <node pkg="local_plan" name="local_pub_point" type="pub_point_path"/> -->
+
+</launch>

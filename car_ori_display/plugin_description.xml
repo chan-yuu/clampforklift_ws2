@@ -1,0 +1,98 @@
+<!--
+/*
+ * @Author: CYUN && JLB
+ * @Date: 2024-09-13 11:20:19
+ * @LastEditors: CYUN && cyun@tju.enu.cn
+ * @LastEditTime: 2024-10-11 11:55:24
+ * @FilePath: /undefined/home/nvidia/10.11_ws/src/car_ori_display/plugin_description.xml
+ * @Description: 加载rviz插件信息
+ * 
+ * Copyright (c) 2024 by Tianjin University, All Rights Reserved. 
+-->
+
+<library path="lib/libcar_ori_display">
+  <class name="angle_display::AngleDisplay" type="angle_display::AngleDisplay" base_class_type="rviz::Panel">
+    <description>
+      A panel to display the current angle of the vehicle.
+    </description>
+  </class>
+
+  <class name="car_ori_display::CarOriDisplay" type="car_ori_display::CarOriDisplay" base_class_type="rviz::Panel">
+    <description>
+      A panel to display the car orientation interface data.
+    </description>
+  </class>
+
+  <class name="car_ori_display::PathSpeedCtrlDisplay" type="car_ori_display::PathSpeedCtrlDisplay" base_class_type="rviz::Panel">
+    <description>
+      A panel to display the path speed control interface data.
+    </description>
+  </class>
+
+    <class name="save_bag::SaveBag" type="save_bag::SaveBag" base_class_type="rviz::Panel">
+    <description>
+      A panel for collecting and saving data using rosbag.
+    </description>
+  </class>
+
+  <class name="button_rviz::CustomButton" type="button_rviz::CustomButton" base_class_type="rviz::Panel">
+    <description>
+      A panel with start and stop buttons to run shell scripts and others.
+    </description>
+  </class>
+
+  <class name="button_rviz::AutoButton" type="button_rviz::AutoButton" base_class_type="rviz::Panel">
+    <description>
+      A panel with start and stop buttons to run shell scripts.
+    </description>
+  </class>
+
+  <class name="car_ori_display::LocationDisplay" type="car_ori_display::LocationDisplay" base_class_type="rviz::Panel">
+    <description>
+      A custom RViz panel that displays GPS and IMU data from the GpsImuInterface message.
+    </description>
+  </class>
+
+  <class name="diagnosis_panel::DiagnosisPanel" type="diagnosis_panel::DiagnosisPanel" base_class_type="rviz::Panel">
+    <description>
+      A panel with status indicators for fault diagnosis.
+    </description>
+  </class>
+
+  <!-- <class name="calibration_panel::CalibrationPanel" type="calibration_panel::CalibrationPanel" base_class_type="rviz::Panel">
+    <description>
+      A panel for camera calibration using chessboard images.
+    </description>
+  </class> -->
+
+  <class name="calibration_lidar_panel::CalibrationLidarPanel" type="calibration_lidar_panel::CalibrationLidarPanel" base_class_type="rviz::Panel">
+    <description>
+      A panel for lidar calibration parameters.
+    </description>
+  </class>
+
+  <class name="points_manager_panel::PointsManagerPanel" type="points_manager_panel::PointsManagerPanel" base_class_type="rviz::Panel">
+    <description>
+      A panel for points management parameters.
+    </description>
+  </class>
+  
+  <class name="bag_recorder::BagRecorderPanel" type="bag_recorder::BagRecorderPanel" base_class_type="rviz::Panel">
+    <description>
+      A panel for selecting and recording ROS topics into a bag file.
+    </description>
+  </class>
+
+  <class name="car_ori_display::ServiceConfigPanel"
+         type="car_ori_display::ServiceConfigPanel"
+         base_class_type="rviz::Panel">
+    <description>auto service panel</description>
+  </class>
+
+  <class name="lola_to_utm_panel::LoLaToUTMPanel" type="lola_to_utm_panel::LoLaToUTMPanel" base_class_type="rviz::Panel">
+    <description>
+      LoLa To UTM Panel converts GPS coordinates to UTM and map coordinates.
+    </description>
+  </class>
+
+</library>

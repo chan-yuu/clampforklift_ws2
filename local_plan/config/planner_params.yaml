@@ -1,0 +1,47 @@
+# 调试模式
+debug_mode: false
+use_fsm: false
+
+global_planner:
+  # 转向角度
+  steering_angle: 40
+  # 转向角度离散数量
+  steering_angle_discrete_num: 1
+  # 轴距
+  wheel_base: 3
+  # 每次拓展节点总长度
+  segment_length: 0.5
+  # 分次拓展的离散数量（每次步长为 segment_length/segment_length_discrete_num）
+  segment_length_discrete_num: 5
+  # 转向惩罚系数
+  steering_penalty: 3
+  # 倒车惩罚系数
+  reversing_penalty: 5
+  # 转向角度改变的惩罚系数
+  steering_change_penalty: 2
+  # 角度惩罚系数
+  angle_penalty: 0
+  # 当前位置与目标位置之间的直线距离小时使用RS曲线规划
+  shot_distance: 5
+  # 车辆长度
+  vehicle_length: 2.88
+  # 车辆宽度
+  vihcle_width: 2.1
+  # 车辆后轴到车尾的距离
+  vehicle_rear_axle_to_tailstock: 0.83
+  RSPointDis: 0.5
+
+local_planner:
+  steering_angle: 40
+  steering_angle_discrete_num: 1
+  wheel_base: 1.75
+  segment_length: 1
+  segment_length_discrete_num: 5
+  steering_penalty: 2
+  reversing_penalty: 1
+  steering_change_penalty: 4
+  angle_penalty: 0
+  shot_distance: 8
+  vehicle_length: 1
+  vihcle_width: 0.5
+  vehicle_rear_axle_to_tailstock: 0.6

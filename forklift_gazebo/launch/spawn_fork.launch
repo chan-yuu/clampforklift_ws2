@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<arg name="use_sim_time" value="true"/>
+	<arg name="x" value="0.0"/>
+	<arg name="y" value="0.0"/>
+	<arg name="z" value="0.0"/>
+	<arg name="urdf_robot_file" value="$(find forklift_gazebo)/urdf/fork.xacro"/>
+	<arg name="robot_name" value="smart"/>
+
+	<!-- <param name="robot_description" command="$(arg urdf_robot_file)"/> -->
+	<param name="robot_description" command="$(find xacro)/xacro '$(arg urdf_robot_file)' roboname:='smart'" />
+
+	<node name="spawn_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -model $(arg robot_name) -param robot_description"/>
+
+	<!-- <arg name="robot_name" value="smart"/> -->
+	<arg name="config_file" value="smart_control_config1.yaml"/>
+
+	<!-- Load joint controller configurations from YAML file to parameter server -->
+	<rosparam file="$(find forklift_gazebo)/config/$(arg config_file)" command="load"/>
+
+	<!-- load controllers -->
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+		output="screen" args="joint_state_controller rear_right_velocity_controller rear_left_velocity_controller front_right_steering_position_controller front_left_steering_position_controller
+													base_link_to_fork_left_horizontal_controller
+													fork_left_horizontal_to_fork_left_vertical_controller
+													base_link_to_fork_right_horizontal_controller
+													fork_right_horizontal_to_fork_right_vertical_controller"/>
+
+	<!-- gazebo_ros -->
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find forklift_gazebo)/worlds/cotton_world.world" />
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+	</include>
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+		respawn="true" output="screen">
+		<remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+	</node>
+
+	<node name="cmdvel2gazebo" pkg="forklift_gazebo" type="cmdvel2gazebo_fork.py" respawn="true" output="screen"/>
+
+
+	<!-- <node name="control_cotton_cmd" pkg="joy_control" type="cotton_joy.py" output="screen" />
+	<node pkg="joy" type="joy_node" name="joy_node" /> -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find forklift_gazebo)/config/detect.rviz" /> 
+
+</launch>

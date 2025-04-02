@@ -1,0 +1,52 @@
+<launch>
+    <!--- Sim Time -->
+    <param name="/use_sim_time" value="true" />
+
+    <!-- 车辆模型 -->
+    <!-- <arg name = "model_xacro" default = "$(find forklift_gazebo)/urdf/forklift.xacro" /> -->
+    <arg name = "model_xacro" default = "$(find forklift_gazebo)/urdf/clamp_detect.xacro" />
+
+    <!-- 将 Urdf 文件的内容加载到参数服务器 -->
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model_xacro)" />
+    <!-- Launch  the joint state publisher -->
+
+    <!-- Launch  the robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+    </node>
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" /> -->
+
+    <!-- Loading rviz files -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find forklift_gazebo)/config/detect.rviz" /> 
+    
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(find forklift_gazebo)/worlds/grey.world" /> -->
+        <arg name="world_name" value="$(find forklift_gazebo)/worlds/cotton_world.world" />
+    </include>
+
+    <!-- 在 gazebo 中加载机器人模型  -->
+    <node pkg="gazebo_ros" type="spawn_model" name="model" args="-urdf -model scout -param robot_description">  
+    </node>
+
+  <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="fork_controller" /> -->
+  <!-- 加载并启动控制器 -->
+  <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="base_link_to_fork_left_controller base_link_to_fork_right_controller"/> -->
+
+    <rosparam file="$(find forklift_gazebo)/config/controller_2.yaml" command="load"/>
+
+  <!-- 控制器夹抱车 -->
+    <!-- joint_state_controller -->
+
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+        args="base_link_to_fork_left_horizontal_controller
+              fork_left_horizontal_to_fork_left_vertical_controller
+              base_link_to_fork_right_horizontal_controller
+              fork_right_horizontal_to_fork_right_vertical_controller" />
+
+  <!-- <node name="control_fork_cmd" pkg="forklift_gazebo" type="keyboard_control_left_right.py"/> -->
+  <!-- <node name="control_cotton_cmd" pkg="joy_control" type="publish_control_command.py"/> -->
+
+</launch>

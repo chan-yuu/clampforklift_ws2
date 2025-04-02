@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<param name="dis" type="double" value="4"/>
+	<param name="rawNum" type="int" value="4"/>
+	<param name="lineNum" type="int" value="10"/>
+	<param name="yaw" type="double" value="90"/>	
+	<node name="spawn_model" pkg="clamp_fork" type="set_gazebo_cotton.py" output="screen" />
+		
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(find forklift_gazebo)/worlds/cotton_world.world" /> -->
+        <!-- <arg name="world_name" value="$(find clamp_fork)/worlds/smach_test.world" /> -->
+		<!-- <arg name="world_name" value="$(find clamp_fork)/worlds/test_10.7.world" /> -->
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+	</include>
+
+</launch>

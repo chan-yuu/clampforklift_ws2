@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!-- robot的name -->
+<robot name="forklift"  xmlns:xacro="http://ros.org/wiki/xacro">
+    <!-- 导入gazebo的插件来控制gazebo中的叉头升降 -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        </plugin>
+    </gazebo>
+
+    <xacro:arg name="robot_namespace" default="/" /> 
+
+    <!-- 属性封装 -->
+    <xacro:property name="M_PI" value="3.14159"/>
+
+    <!-- 主要用于gazebo中的碰撞监测 -->
+    <xacro:property name="base_x_size" value="0.9250000" />
+    <xacro:property name="base_y_size" value="0.380000" />
+    <xacro:property name="base_z_size" value="0.210000" />
+
+    
+    <!-- 轴距 （左右）车轮间距 前后车轮的垂直误差 -->
+    <xacro:property name="wheelbase" value="1.5" />
+    <xacro:property name="track" value="0.8" />   <!-- track————车轮间距 -->
+    <xacro:property name="wheel_vertical_offset" value="-0.0702" />
+
+    <xacro:property name="support_length" value="4.0" />
+
+    <xacro:property name="wheel_length" value="1.1653e-01" />
+    <xacro:property name="wheel_radius" value="1.6459e-01" />
+
+    <xacro:arg name="gpu" default="true"/>
+    <xacro:property name="gpu" value="$(arg gpu)" />
+    <xacro:arg name="organize_cloud" default="true"/>
+    <xacro:property name="organize_cloud" value="$(arg organize_cloud)" />
+    
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+    </material>
+    
+    <!-- 底盘的轮子 -->
+    <xacro:include filename="$(find forklift_gazebo)/urdf/scout_wheel_type1.xacro" />
+    <xacro:include filename="$(find forklift_gazebo)/urdf/scout_wheel_type2.xacro" />
+    <xacro:include filename="$(find forklift_gazebo)/urdf/inertial.xacro" />
+    <!-- <xacro:include filename="$(find forklift_gazebo)/urdf/camera.xacro" /> -->
+    <!-- <xacro:include filename="$(find forklift_gazebo)/urdf/sensor_camera.xacro" /> -->
+    
+    <!-- D435i RGB-D相机相关 -->
+    <xacro:include filename="$(find realsense_ros_gazebo)/xacro/depthcam.xacro"/>
+    <xacro:realsense_d435 sensor_name="camera" parent_link="base_link" rate="30.0">
+    <origin rpy="0 0 0" xyz="1 0 0.3"/>
+    </xacro:realsense_d435>
+    
+
+    <!-- support是雷达支架，链接的也是这个xacro  -->
+    <!-- VLP16 激光雷达 -->
+    <!-- <xacro:include filename="$(find forklift_gazebo)/urdf/laser_support.xacro" />
+    <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+    <xacro:VLP-16 parent="support" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+          <origin xyz="0 0 1.7" rpy="0 0 0" />
+    </xacro:VLP-16> -->
+
+    <!-- 如果使用32线的lidar -->
+    <!-- 32线雷达 -->
+    <xacro:include filename="$(find forklift_gazebo)/urdf/laser_support.xacro" />
+	<xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
+  	<xacro:HDL-32E parent="support" name="velodyne" topic="/velodyne_points" hz="10" samples="4000" gpu="${gpu}">
+    		<origin xyz="0 0 1.7" rpy="0 0 0" />
+  	</xacro:HDL-32E>
+
+
+    <!-- IMU 模块 -->
+    <xacro:include filename="$(find forklift_gazebo)/urdf/imu.xacro"/>
+    <xacro:imu sensor_name="imu" parent_link="base_link">
+    <origin rpy="0 0 0" xyz="-0.03 0 ${base_z_size/2}"/>
+    </xacro:imu>
+
+    <!-- 机器人导航控制模块 -->
+    <xacro:include filename="$(find forklift_gazebo)/urdf/move.xacro" />
+
+    <!-- Base link  底盘 -->
+    <link name="base_link">
+        <visual>
+            <origin xyz="-1.0 -0.55 -0.1" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://forklift_gazebo/meshes/fork_base_link.dae"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-1.0 -0.55 -0.1" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://forklift_gazebo/meshes/fork_base_link.dae"/> 
+                <!-- <box size="${base_x_size} ${base_y_size} ${base_z_size}"/> -->
+            </geometry>
+        </collision>
+        <!-- <inertial>
+        <mass value="100"/>
+        <inertia ixx="2.1667" ixy="0" ixz="0" iyy="8.6667" iyz="0" izz="10.4167"/>
+        </inertial> -->
+    </link>
+
+
+
+    <!-- Gazebo/Black
+    Gazebo/Blue
+    Gazebo/Red
+    Gazebo/Green
+    Gazebo/Yellow
+    Gazebo/Orange
+    Gazebo/Purple
+    Gazebo/White
+    Gazebo/Grey -->
+
+    <!-- <gazebo reference="base_link"> -->
+        <!-- 与rviz不同（3）：重新设置颜色 -->
+        <!-- <material>Gazebo/RedGlow</material> -->
+    <!-- </gazebo> -->
+
+    <!-- <gazebo reference="base_link">
+        <material>
+            <script>
+                <uri>package://forklift_gazebo/materials/scripts/gazebo.material</uri>
+                <name>Custom/RedGlow</name>
+            </script>
+            <texture>
+                <diffuse>package://forklift_gazebo/materials/textures/Travertine003.png</diffuse>
+            </texture>
+        </material>
+    </gazebo> -->
+
+    <gazebo reference="base_link">
+        <material>Custom/CustomTexture</material>
+    </gazebo>
+
+
+    <!-- 叉头 -->
+    <link name="fork">
+        <visual>
+            <origin xyz="0.0 -0.38 -0.2" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://forklift_gazebo/meshes/fork.dae"/> 
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://forklift_gazebo/meshes/fork.dae"/> 
+                <!-- <box size="${base_x_size} ${base_y_size} ${base_z_size}"/> -->
+            </geometry>
+        </collision>
+        <inertial>
+        <!-- 质量会影响托盘升降的速度 -->
+        <mass value="1"/>
+        <inertia ixx="0.06083" ixy="0" ixz="0" iyy="0.1275" iyz="0" izz="0.17333"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="fork">
+        <!-- 与rviz不同（3）：重新设置颜色 FlatBlack -->
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+    <!-- Prismatic Joint -->
+    <joint name="base_to_fork" type="prismatic">
+        <parent link="base_link"/>
+        <child link="fork"/>
+        <limit lower="0" upper="2" velocity="0.5" effort="2000"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="1 0.0 0"/>
+    </joint>
+
+    <!-- Transmission for the prismatic joint -->
+    <transmission name="base_to_fork_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="base_to_fork">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="base_to_fork_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <link name="base_footprint"/>
+    <joint name="base_footprint_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="base_footprint" />
+    </joint>
+
+    <link name="inertial_link">
+        <inertial>
+            <mass value="40" />
+            <origin xyz="0.0 0.0 0.0" />
+            <inertia ixx="2.288641" ixy="0" ixz="0" iyy="5.103976" iyz="0" izz="3.431465" />
+        </inertial>
+    </link>
+
+    <joint name="inertial_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="inertial_link" />
+    </joint>
+
+    <!-- 宏  Scout wheel macros -->
+    <!-- wheel labeled from 0 to 3, conter-clockwise, starting from front right wheel -->
+    <!-- motor 1 and 2 (left side) are mechanically installed in a reversed direction -->
+    <xacro:scout_wheel_type1 wheel_prefix="front_right">
+        <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
+    </xacro:scout_wheel_type1>
+    <xacro:scout_wheel_type2 wheel_prefix="front_left">
+        <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:scout_wheel_type2>
+    <xacro:scout_wheel_type1 wheel_prefix="rear_left">
+        <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:scout_wheel_type1>
+    <xacro:scout_wheel_type2 wheel_prefix="rear_right">
+        <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
+    </xacro:scout_wheel_type2>
+
+</robot>

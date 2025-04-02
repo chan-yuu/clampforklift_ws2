@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>car_ori_display</name>
+  <version>0.0.0</version>
+  <description>The car_ori_display package</description>
+
+  <maintainer email="cyun@tju.edu.cn">TODO: Maintainer Name</maintainer>
+  <license>TODO: License declaration</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>cmake</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>rviz</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>qtbase5-dev</build_depend> <!-- 添加Qt的依赖项 -->
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>visualization_msgs</build_depend>
+  <build_depend>angles</build_depend>
+
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>pcl_conversions</build_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>qtbase5-dev</exec_depend> <!-- 添加Qt的依赖项 -->
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>angles</exec_depend>
+
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>pcl_ros</exec_depend>
+  <exec_depend>pcl_conversions</exec_depend>
+
+  <export>
+    <build_type>catkin</build_type>
+    <rviz plugin="${prefix}/plugin_description.xml"/>
+  </export>
+</package>

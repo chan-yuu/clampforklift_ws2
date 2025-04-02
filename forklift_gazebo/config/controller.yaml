@@ -1,0 +1,22 @@
+gazebo_ros_control:
+  pid_gains:
+    base_link_to_fork_right:
+      p: 250.0
+      i: 0.01
+      d: 10.0
+      i_clamp: 1.0
+    base_link_to_fork_left:
+      p: 250.0
+      i: 0.01
+      d: 10.0
+      i_clamp: 1.0
+
+base_link_to_fork_left_controller:
+  type: position_controllers/JointPositionController
+  joint: base_link_to_fork_left
+  pid: {p: 250.0, i: 0.01, d: 10.0, i_clamp: 1.0}
+
+base_link_to_fork_right_controller:
+  type: position_controllers/JointPositionController
+  joint: base_link_to_fork_right
+  pid: {p: 250.0, i: 0.01, d: 10.0, i_clamp: 1.0}

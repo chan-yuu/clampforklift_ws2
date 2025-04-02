@@ -1,0 +1,13 @@
+car_ori_display 显示底层CAN反馈的信息
+
+gps_imu_display 显示定位的odom信息
+
+path_speed_ctrl_display 显示控制信息
+
+diagnosis_panel 显示故障灯情况
+
+bag_recorder_panel 快捷保存bag的插件
+
+points_manager_panel 快捷采集点位->可以通过打点仪更快的采集点位
+
+service_config_panel 快速创建相关服务内容

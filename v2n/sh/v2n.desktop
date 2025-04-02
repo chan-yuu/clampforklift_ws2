@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=V2N
+Comment=Start the V2N node in ROS
+Exec=/bin/bash -c "/home/nvidia/clamp_forklift_ws2/src/v2n/sh/v2n.sh"
+Icon=/home/nvidia/clamp_forklift_ws2/src/v2n/sh/v2n.png
+Terminal=false
+Type=Application
+Categories=Application;

@@ -1,0 +1,40 @@
+<launch>
+
+    <!-- <arg name = "model_xacro" default = "$(find forklift_nav)/urdf/base.xacro" /> -->
+    <arg name = "model_xacro" default = "$(find forklift_gazebo)/urdf/forklift.xacro" />
+
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model_xacro)" />
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(find forklift_gmapping)/worlds/camera_calib.world" />  -->
+        <arg name="world_name" value="$(find forklift_nav)/worlds/my_world.world" /> 
+        <!-- <arg name="world_name" value="$(find forklift_gmapping)/worlds/grey.world" />  -->
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="recording" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <node pkg="gazebo_ros" type="spawn_model" name="model" args="-urdf -model scout -param robot_description"/>  
+
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find forklift_nav)/maps/map.yaml"/>
+
+    <!-- <include file="$(find forklift_nav)/launch/amcl.launch" /> -->
+    <include file="$(find ndt_localizer)/launch/ndt_localizer.launch" />
+
+    <include file="$(find forklift_nav)/launch/move_base.launch" />
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+    </node>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+    <rosparam file="$(find forklift_gazebo)/config/controller.yaml" command="load"/>
+    <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="fork_controller" /> -->
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+			args="base_link_to_fork_left_controller base_link_to_fork_right_controller"/>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find forklift_nav)/rviz/nav.rviz" />
+
+</launch>

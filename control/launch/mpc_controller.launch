@@ -1,0 +1,9 @@
+<launch>
+    <!-- 设置MPC控制参数 -->
+    <param name="max_steering_angle" value="0.6" />
+    <param name="wheelbase" value="2.5" />
+
+    <!-- 启动MPC控制器节点 -->
+    <node name="mpc_controller" pkg="your_package_name" type="mpc_controller" output="screen" />
+</launch>
+

@@ -1,0 +1,38 @@
+wire_pub_node:
+  ifname: "can0"
+  Rate: 100
+  openloop: 0
+
+stanley_controller:
+  kp: 1.0
+  max_steering_angle: 1.22 # 70度
+  wheelbase: 1.77
+  axle_topic: front_axle
+  preview_point: 5
+  
+debug_mode: false
+
+FSM:
+  max_steering_angle: 70
+  wheelbase: 1.77
+  pre_index: 10 #档位育苗 只用于档位
+  brake: 6.0 #刹车力度
+  stopDistance: 0.2  #小于 视为到了终点，准备STOP
+  disToend: 0.1  #小于 视为到了全局/局部终点，等待进入局部规划/新的全局规划
+  GlobalTargetSpeed: 0.5 #全局规划目标速度
+  LocalTargetSpeed: 0.5  #局部规划目标速度
+  have_local_: false  #true时只执行局部规划，全局路径发也不影响； 为false时，先执行全局再执行局部
+
+speed_params:
+  # <85
+  num_smaller_path_speed_max : 0.7
+  num_smaller_path_speed_min : 0.4
+  # >=85
+  num_normal_path_speed_max : 2
+  num_normal_path_speed_min : 0.25
+  speed_very_high : 2.0 # 直线速
+  speed_high : 1.7 # 高速
+  speed_medium : 1.5 # 中速
+  speed_medium_medium : 0.7 # 中速
+  speed_low : 0.5 # 低速
+  speed_very_low : 0.25 # 非常低的速度

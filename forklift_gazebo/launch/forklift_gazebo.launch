@@ -1,0 +1,45 @@
+<launch>
+    <!--- Sim Time -->
+    <!-- <param name="/use_sim_time" value="true" /> -->
+
+    <!-- 车辆模型 -->
+    <arg name = "model_xacro" default = "$(find forklift_gazebo)/urdf/base.xacro" />
+    <!-- 将 Urdf 文件的内容加载到参数服务器 -->
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model_xacro)" />
+    <!-- Launch  the joint state publisher -->
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" /> -->
+
+    <!-- Launch  the robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+        <!-- <param name="robot_description" command="$(arg robot_description)" /> -->
+    </node>
+
+    <!-- debug: gui 无法发布 -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+    <!-- Loading rviz files -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find forklift_gazebo)/config/show_robot.rviz" /> 
+    
+    <!-- cyun: -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find forklift_gazebo)/worlds/camera_calib.world" /> 
+        <!-- <arg name="world_name" value="$(find forklift_gazebo)/worlds/my_world.world" />  -->
+    </include>
+    <!-- else : 在 gazebo 中启动一个环境 -->
+    <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch"> 
+        <arg name="world_name" value="$(find forklift_gazebo)/worlds/lab.world" /> 
+    </include> -->
+
+
+    <rosparam file="$(find forklift_gazebo)/config/scout_v2_control.yaml" command="load"/>
+
+    <!-- 在 gazebo 中加载机器人模型  -->
+    <node pkg="gazebo_ros" type="spawn_model" name="model" args="-urdf -model scout -param robot_description">  
+        <!-- <param name="use_sim_time" value="true"/> -->
+        <!-- <rosparam command="load" file="$(find forklift_gazebo)/config/scout_v2_control.yaml"/> -->
+    </node>
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="fork_controller" />
+
+</launch>

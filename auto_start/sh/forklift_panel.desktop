@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=forklift panel
+Comment=Launch the forklift sim Shell Script
+# 设置目录
+Exec=/home/cyun/learn_ws/clamp_forklift_ws/src/auto_start/sh/start_sim_forklift.sh
+Terminal=true
+Icon=/home/cyun/learn_ws/clamp_forklift_ws/src/auto_start/png/icon.png
+Categories=Utility;
+StartupNotify=true
+Name[en_US]=forklift sim

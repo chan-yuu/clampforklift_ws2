@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<arg name="use_sim_time" value="true"/>
+	<!-- 初始位置 -->
+	<!-- <arg name="x" value="-24.7791"/>
+	<arg name="y" value="1.8364"/>
+	<arg name="z" value="0.0"/>
+	<arg name="roll" value="-0.0"/>
+	<arg name="pitch" value="0.0"/>
+	<arg name="yaw" value="1.59"/> -->
+
+	<arg name="urdf_robot_file" value="$(find clamp_fork)/urdf/fork.xacro"/>
+	<arg name="robot_name" value="smart"/>
+	<param name="robot_description" command="$(find xacro)/xacro '$(arg urdf_robot_file)' roboname:='smart'" />
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<!-- 空白地图 -->
+		<arg name="world_name" value="$(find clamp_fork)/worlds/2024.10.15.world" />
+		<!-- 彩色世界初始 -->
+		<!-- <arg name="world_name" value="$(find clamp_fork)/worlds/my_world.world" /> -->
+		<!-- 孪生试验场 -->
+		<!-- <arg name="world_name" value="$(find clamp_fork)/worlds/vehicle_test7.world" /> -->
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+	</include>
+
+	<!-- 二维地图 -->
+  	<!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find clamp_fork)/maps/map.yaml"/> -->
+  	<!-- 彩色世界 -->
+	<!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find clamp_fork)/maps/map.yaml"/> -->
+	<!-- <node pkg="map_server" type="map_server" name="map_server" args="$(find ndt_localizer)/map/vehicle_test.yaml"/> -->
+
+	<!-- <include file="$(find map_load)/launch/map_loader.launch"/> -->
+</launch>

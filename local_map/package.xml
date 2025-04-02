@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>local_map</name>
+  <version>0.0.0</version>
+  <description>The local_map package</description>
+
+  <maintainer email="you@yourdomain.tld">Your Name</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2_geometry_msgs</build_depend>
+  <build_depend>PCL</build_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>tf2_geometry_msgs</exec_depend>
+  <exec_depend>PCL</exec_depend>
+
+  <!-- Other dependencies -->
+
+</package>

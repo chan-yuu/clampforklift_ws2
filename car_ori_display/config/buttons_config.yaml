@@ -1,0 +1,10 @@
+buttons:
+  - start_name: "start nvidia"
+    start_command: "gnome-terminal --tab --title=\"NVIDIA SMI\" -- bash -c \"watch -n 1 nvidia-smi; exec bash\""
+    stop_name: "stop nvidia"
+    stop_command: "killall -q watch"
+
+  - start_name: "start roscore"
+    start_command: "gnome-terminal --tab --title=\"Roscore\" -- bash -c \"source ~/.carla_bash.rc;source /home/kemove/forklift_sim_ws/devel/setup.bash; roscore; exec bash\""
+    stop_name: "stop roscore"
+    stop_command: "killall -q roscore"

@@ -1,0 +1,718 @@
+<?xml version="1.0" ?>
+
+<robot name="$(arg roboname)" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <!-- 主要用于gazebo中的碰撞监测 -->
+  <xacro:property name="base_x_size" value="0.9250000" />
+  <xacro:property name="base_y_size" value="0.380000" />
+  <xacro:property name="base_z_size" value="0.210000" />
+
+  <!-- 轴距 （左右）车轮间距 前后车轮的垂直误差 -->
+  <xacro:property name="wheelbase" value="1.5" />
+  <xacro:property name="track" value="0.8" />
+  <xacro:property name="wheel_vertical_offset" value="-0.0702" />
+
+  <xacro:property name="support_length" value="4.0" />
+
+  <xacro:property name="wheel_length" value="1.1653e-01" />
+  <xacro:property name="wheel_radius" value="1.6459e-01" />
+
+  <xacro:arg name="gpu" default="true"/>
+  <xacro:property name="gpu" value="$(arg gpu)" />
+  <xacro:arg name="organize_cloud" default="true"/>
+  <xacro:property name="organize_cloud" value="$(arg organize_cloud)" />
+  
+  <material name="black">
+      <color rgba="0.0 0.0 0.0 1.0" />
+  </material>
+    
+  <!-- 导入其他传感器 -->
+  <xacro:include filename="$(find forklift_gazebo)/urdf/inertial.xacro" />
+
+  <xacro:include filename="$(find realsense_ros_gazebo)/xacro/depthcam.xacro"/>
+  <xacro:realsense_d435 sensor_name="camera" parent_link="front_axle" rate="30.0">
+  <origin rpy="0 0 0" xyz="0.4 0 0.4"/>
+  </xacro:realsense_d435>
+
+  <!-- 32线雷达 -->
+  <xacro:include filename="$(find forklift_gazebo)/urdf/laser_support.xacro" />
+	<xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
+  <xacro:HDL-32E parent="front_axle" name="velodyne" topic="/rslidar_points" organize_cloud="${organize_cloud}" hz="10" samples="2178" gpu="${gpu}">
+    <origin xyz="-1.0 0 2.5" rpy="0 0 0" />
+  </xacro:HDL-32E>
+
+    <!-- 128线雷达用于检测 -->
+  <!-- <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf_detect.xacro"/>
+  <xacro:HDL-128E parent="base_link" name="velodyne128" topic="/velodyne_points_128" organize_cloud="true" hz="10" lasers="128" samples="2187" noise="0.008" min_angle="-1.57" max_angle="1.57" gpu="${gpu}">
+      <origin xyz="1.4 0 0.5" rpy="0 0 0"/>
+  </xacro:HDL-128E> -->
+
+  <!-- IMU 模块 -->
+  <xacro:include filename="$(find forklift_gazebo)/urdf/imu.xacro"/>
+  <xacro:imu sensor_name="imu" parent_link="front_axle">
+  <origin rpy="0 0 0" xyz="-0.03 0 ${base_z_size/2}"/>
+  </xacro:imu>
+
+  <!-- gps module -->
+  <link name="gps_link">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.01" iyy="0.01" izz="0.01" ixy="0.01" ixz="0.01" iyz="0.01"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.1"/>
+      </geometry>
+    </collision>
+    <sensor name="gps_sensor" type="gps">
+      <update_rate>1.0</update_rate>
+      <vertical_fov>90.0</vertical_fov>
+      <horizontal_fov>90.0</horizontal_fov>
+      <visualize>true</visualize>
+      <gps>
+        <position>0 0 0</position>
+      </gps>
+    </sensor>
+  </link>
+  <joint name="base_to_gps" type="fixed">
+    <parent link="base_footprint" />
+    <child link="gps_link" />
+    <origin xyz="0.0 0.0 2.0" rpy="0 0 0" />  <!-- 适当设置位置 -->
+  </joint>
+
+  <gazebo>
+    <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+      <updateRate>50</updateRate>
+      <frameId>front_axle</frameId>
+      <topicName>navsat/fix</topicName>
+      <referenceLatitude>$(optenv GAZEBO_WORLD_LAT 49.9)</referenceLatitude>
+      <referenceLongitude>$(optenv GAZEBO_WORLD_LON 8.9)</referenceLongitude>
+      <referenceHeading>90</referenceHeading>
+      <referenceAltitude>2</referenceAltitude>
+      <drift>0.0000001 0.000001 0.000001</drift>
+    </plugin>
+  </gazebo>
+
+
+  <link name="base_footprint"/>
+  <joint name="base_joint1" type="fixed">
+      <origin xyz="0.934 0 0" rpy="0 0 0" />
+      <parent link="base_footprint" />
+      <child link="base_link" />
+  </joint>
+
+  <!-- link  -->
+  <link name="base_link"/>
+  <joint name="base_joint2" type="fixed">
+      <origin xyz="0.934 0 0" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="front_axle" />
+  </joint>
+
+  <!-- <link name="front_front_axle"/>
+  <joint name="base_joint3" type="fixed">
+      <origin xyz="2.934 0 0" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="front_front_axle" />
+  </joint> -->
+
+  <!-- 属性封装 -->
+  <xacro:property name="PI" value="3.1415926835897931"/>
+
+  <!-- base -->
+  <xacro:property name="base_length" value="2.695"/>
+  <xacro:property name="base_width" value="0.1"/>
+  <xacro:property name="base_height" value="1.370"/>
+  <xacro:property name="base_collision_height" value="0.875"/>
+  <xacro:property name="base_mass" value="956"/>
+  <xacro:property name="base_mass_ixx" value="343.0"/>
+  <xacro:property name="base_mass_iyy" value="728.0"/>
+  <xacro:property name="base_mass_izz" value="772.0"/>
+
+  <!-- rear tyre -->
+  <xacro:property name="rear_tyre_x" value="1.846"/>
+  <xacro:property name="rear_tyre_y" value="0.642"/>
+  <xacro:property name="rear_tyre_r" value="0.3"/>
+  <xacro:property name="rear_tyre_length" value="0.165"/>
+  <xacro:property name="rear_tyre_mass" value="20.0"/>
+  <xacro:property name="rear_tyre_mass_ixx" value="0.5"/>
+  <xacro:property name="rear_tyre_mass_iyy" value="0.9"/>
+  <xacro:property name="rear_tyre_mass_izz" value="0.5"/> 
+
+  <!-- front tyre -->
+  <xacro:property name="front_tyre_x" value="0.923"/>
+  <xacro:property name="front_tyre_y" value="0.642"/>
+  <xacro:property name="front_tyre_r" value="0.3"/>
+  <xacro:property name="front_tyre_length" value="0.165"/>
+  <xacro:property name="front_tyre_mass" value="20.0"/>
+  <xacro:property name="front_tyre_mass_ixx" value="0.5"/>
+  <xacro:property name="front_tyre_mass_iyy" value="0.9"/>
+  <xacro:property name="front_tyre_mass_izz" value="0.5"/>  
+
+  <!-- steering -->
+  <xacro:property name="str_angle" value="1.39"/>
+  <xacro:property name="str_length" value="0.01"/>
+  <xacro:property name="str_radius" value="0.1"/>
+  <xacro:property name="str_mass" value="5.0"/>
+  <xacro:property name="str_mass_ixx" value="0.012"/>
+  <xacro:property name="str_mass_iyy" value="0.025"/>
+  <xacro:property name="str_mass_izz" value="0.012"/> 
+
+  <!--Car Body-->
+  <link name="front_axle">
+    <collision>
+      <origin xyz="-0.2 0 ${base_collision_height}" rpy="0 0 0"/>  
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="-0.7 0 ${base_collision_height}" rpy="0 0 0"/>  
+      <geometry>
+        <mesh filename="package://car_model/meshes/fork_new_model.stl"/>
+        <!-- <mesh filename="package://car_model/meshes/vehicle_body.dae"/> -->
+        <!-- <box size="${base_length} ${base_width} ${base_height}"/> -->
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="inertial_joint" type="fixed">
+    <parent link="front_axle"/>
+    <child link="main_mass"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>  
+
+  <link name="main_mass" type="fixed">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${base_mass}"/>
+      <inertia
+        ixx="${base_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+        iyy="${base_mass_iyy}"  iyz="0.000000"
+        izz="${base_mass_izz}"/>
+    </inertial>
+  </link>
+
+
+  <!--Rear Right Wheel-->
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="front_axle"/>
+    <child link="rear_right_wheel_link"/>
+    <!-- <origin xyz="${front_tyre_x} ${-front_tyre_y} ${front_tyre_r}" rpy="0 0 0"/> -->
+    <origin xyz="0 ${-front_tyre_y} ${front_tyre_r}" rpy="0 0 0"/>
+    <!-- <origin xyz="${-rear_tyre_x} ${-rear_tyre_y} ${rear_tyre_r}" rpy="0 0 0"/> -->
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.1"/>
+    <limit effort="100000" velocity="10000" />
+    <joint_properties damping="0.0" friction="0.0" />
+  </joint>
+
+  <link name="rear_right_wheel_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${rear_tyre_length}" radius="${rear_tyre_r}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 -${PI/2}"/>
+      <geometry>
+        <mesh filename="package://car_model/meshes/wheel.dae"/>
+        <!-- <cylinder length="${rear_tyre_length}" radius="${rear_tyre_r}"/> -->
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${rear_tyre_mass}"/>
+      <inertia
+        ixx="${rear_tyre_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+        iyy="${rear_tyre_mass_iyy}"  iyz="0.000000"
+        izz="${rear_tyre_mass_izz}"/>
+    </inertial>
+  </link>
+
+  <!--Rear Left Wheel-->
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="front_axle"/>
+    <child link="rear_left_wheel_link"/>
+    <!-- <origin xyz="${front_tyre_x} ${front_tyre_y} ${front_tyre_r}" rpy="0 0 0"/> -->
+    <origin xyz="0 ${front_tyre_y} ${front_tyre_r}" rpy="0 0 0"/>
+    <!-- <origin xyz="${-rear_tyre_x} ${rear_tyre_y} ${rear_tyre_r}" rpy="0 0 0"/> -->
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.1"/>
+    <limit effort="100000" velocity="10000" />
+    <joint_properties damping="0.0" friction="0.0" />
+  </joint>
+
+  <link name="rear_left_wheel_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${rear_tyre_length}" radius="${rear_tyre_r}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 ${PI/2}"/>
+      <geometry>
+        <mesh filename="package://car_model/meshes/wheel.dae"/>
+        <cylinder length="${rear_tyre_length}" radius="${rear_tyre_r}"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${rear_tyre_mass}"/>
+      <inertia
+        ixx="${rear_tyre_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+        iyy="${rear_tyre_mass_iyy}"  iyz="0.000000"
+        izz="${rear_tyre_mass_izz}"/>
+    </inertial>
+  </link> 
+
+
+
+  <link name="front_right_steering_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${str_length}" radius="${str_radius}"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${str_mass}"/>
+      <inertia
+      ixx="${str_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+      iyy="${str_mass_iyy}"  iyz="0.000000"
+      izz="${str_mass_izz}"/>
+    </inertial>
+  </link>
+  <!--Front Right Steering-->
+  <joint name="front_right_steering_joint" type="revolute">
+    <parent link="front_axle"/>
+    <child link="front_right_steering_link"/>
+    <origin xyz="${-rear_tyre_x} ${-rear_tyre_y} ${rear_tyre_r}" rpy="0 0 0"/>
+    <!-- <origin xyz="${front_tyre_x} ${-front_tyre_y} ${front_tyre_r}" rpy="0 0 0"/> -->
+    <axis xyz="0 0 1"/>
+    <limit lower="${-str_angle}" upper="${str_angle}" effort="1000000.0" velocity="10000.0"/>
+    <dynamics damping="10.0" friction="0.0"/>
+  </joint>
+
+
+  <link name="front_left_steering_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${str_length}" radius="${str_radius}"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${str_mass}"/>
+      <inertia
+      ixx="${str_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+      iyy="${str_mass_iyy}"  iyz="0.000000"
+      izz="${str_mass_izz}"/>
+    </inertial>
+  </link>
+  <!--Front Left Steering-->
+  <joint name="front_left_steering_joint" type="revolute">
+    <parent link="front_axle"/>
+    <child link="front_left_steering_link"/>
+    <origin xyz="${-rear_tyre_x} ${rear_tyre_y} ${rear_tyre_r}" rpy="0 0 0"/>
+    <!-- <origin xyz="${front_tyre_x} ${front_tyre_y} ${front_tyre_r}" rpy="0 0 0"/> -->
+    <axis xyz="0 0 1"/>
+    <limit lower="${-str_angle}" upper="${str_angle}" effort="1000000.0" velocity="10000.0"/>
+    <dynamics damping="10.0" friction="0.0"/>
+  </joint>
+
+
+
+  <link name="front_left_wheel_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${front_tyre_length}" radius="${front_tyre_r}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 ${PI/2}"/>
+      <geometry>
+        <mesh filename="package://car_model/meshes/wheel.dae"/>
+        <!-- <cylinder length="${front_tyre_length}" radius="${front_tyre_r}"/> -->
+      </geometry>  
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${front_tyre_mass}"/>
+      <inertia
+        ixx="${front_tyre_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+        iyy="${front_tyre_mass_iyy}"  iyz="0.000000"
+        izz="${front_tyre_mass_izz}"/>
+    </inertial>
+  </link>  
+  <!--Front Left Wheel-->
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="front_left_steering_link"/>
+    <child link="front_left_wheel_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.1"/>
+    <limit effort="1000000" velocity="10000" />
+    <joint_properties damping="0.0" friction="0.0" />
+  </joint>
+
+  <link name="front_right_wheel_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${front_tyre_length}" radius="${front_tyre_r}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 -${PI/2}"/>
+      <geometry>
+        <mesh filename="package://car_model/meshes/wheel.dae"/>
+        <cylinder length="${front_tyre_length}" radius="${front_tyre_r}"/>
+      </geometry>  
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${front_tyre_mass}"/>
+      <inertia
+        ixx="${front_tyre_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+        iyy="${front_tyre_mass_iyy}"  iyz="0.000000"
+        izz="${front_tyre_mass_izz}"/>
+    </inertial>
+  </link>
+
+  <!--Front Right Wheel-->
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="front_right_steering_link"/>
+    <child link="front_right_wheel_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.1"/>
+    <limit effort="1000000" velocity="10000" />
+    <joint_properties damping="0.0" friction="0.0" />
+  </joint>
+
+
+  <!-- motors and transmissions for the two rear wheels -->
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_right_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>  
+
+  <transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_left_wheel_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>  
+
+  <!-- EPS and transmissions for the front steering -->
+  <transmission name="tran3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_right_steering_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="eps_right">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+      <motorTorqueConstant>1000000</motorTorqueConstant>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_left_steering_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="eps_left">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+      <motorTorqueConstant>1000000</motorTorqueConstant>
+    </actuator>
+  </transmission>
+
+  <!-- Friction Parametres -->
+  <gazebo reference="rear_right_wheel_link">
+    <mu1>10000000</mu1>
+    <mu2>10000000</mu2>
+    <kp>10000000</kp>
+    <kd>1</kd>
+    <minDepth>0.01</minDepth>
+    <maxVel>100</maxVel>  
+  </gazebo>  
+
+  <gazebo reference="rear_left_wheel_link">
+    <mu1>10000000</mu1>
+    <mu2>10000000</mu2>
+    <kp>10000000</kp>
+    <kd>1</kd>     
+    <minDepth>0.01</minDepth>
+    <maxVel>100</maxVel>      
+  </gazebo>   
+
+  <gazebo reference="front_right_wheel_link">
+    <mu1>10000000</mu1>
+    <mu2>10000000</mu2>
+    <kp>10000000</kp>
+    <kd>1</kd>
+    <minDepth>0.01</minDepth>
+    <maxVel>100</maxVel>           
+  </gazebo> 
+
+  <gazebo reference="front_left_wheel_link">
+    <mu1>10000000</mu1>
+    <mu2>10000000</mu2>
+    <kp>10000000</kp>
+    <kd>1</kd>  
+    <minDepth>0.01</minDepth>
+    <maxVel>100</maxVel>          
+  </gazebo>
+
+  <!-- Gazebo Plugins -->
+  <!-- <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/$(arg roboname)</robotNamespace>
+      <robotParam>robot_description</robotParam>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo> -->
+
+    <!-- 左右的fork -->
+    <link name='fork_left'>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+        </inertial>
+        <visual name='visual'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <!-- <origin xyz="2.0 0.25 -0.35" rpy="0 0 0" /> -->
+            <geometry>
+                <!-- <box size="1 0.043 0.35"/> -->
+                <!-- <box size="1.21 0.121 0.1"/> -->
+                <mesh filename="package://forklift_gazebo/meshes/clamp/jia_left.stl"/>
+            </geometry>
+            <!-- <material name="CustomGrey"/> -->
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <box size="1 0.043 0.35"/>
+                <!-- <mesh filename="package://forklift_gazebo/meshes/new/fork_last.dae"/> -->
+            </geometry>
+        </collision>
+    </link>
+
+    <link name='fork_right'>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+        </inertial>
+        <visual name='visual'>
+            <origin xyz="0.0 -0.0 -0.0" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <!-- <box size="1 0.043 0.35"/> -->
+                <!-- <box size="1.21 0.121 0.1"/> -->
+                <mesh filename="package://forklift_gazebo/meshes/clamp/jia_right.stl"/>
+            </geometry>
+            <!-- <material name="CustomGrey"/> -->
+        </visual>
+        <collision name='collision'>
+            <geometry>
+                <box size="1 0.043 0.35"/>
+                <!-- <box size="1.22 0.121 0.043"/> -->
+                <!-- <mesh filename="package://forklift_gazebo/meshes/new/fork_last.dae"/> -->
+            </geometry>
+        </collision>
+    </link>
+
+    <gazebo reference="fork_left">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+    <gazebo reference="fork_right">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+
+    <link name="fork_left_horizontal">
+        <visual>
+        <geometry>
+            <box size="0.001 0.005 0.001"/>
+        </geometry>
+        </visual>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+        </inertial>
+    </link>
+
+    <!-- 左叉水平平移关节 -->
+    <joint name="base_link_to_fork_left_horizontal" type="prismatic">
+        <parent link="front_axle"/>
+        <child link="fork_left_horizontal"/>
+        <limit lower="-0.10" upper="0.60" velocity="0.5" effort="4000"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="1.0 0.25 0.25" rpy="0 0 0"/>
+    </joint>
+    <!-- 左叉垂直平移关节 -->
+    <joint name="fork_left_horizontal_to_fork_left_vertical" type="prismatic">
+        <parent link="fork_left_horizontal"/>
+        <child link="fork_left"/>
+        <limit lower="-1.0" upper="3.5" velocity="0.5" effort="4000"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+
+    <link name="fork_right_horizontal">
+        <visual>
+        <geometry>
+            <box size="0.001 0.005 0.001"/>
+        </geometry>
+        </visual>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+        </inertial>
+    </link>
+    <!-- 右叉水平平移关节 -->
+    <joint name="base_link_to_fork_right_horizontal" type="prismatic">
+        <parent link="front_axle"/>
+        <child link="fork_right_horizontal"/>
+        <limit lower="-0.60" upper="0.1" velocity="0.5" effort="4000"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="1.0 -0.25 0.25" rpy="0 0 0"/>
+    </joint>
+    <!-- 右叉垂直平移关节 -->
+    <joint name="fork_right_horizontal_to_fork_right_vertical" type="prismatic">
+        <parent link="fork_right_horizontal"/>
+        <child link="fork_right"/>
+        <limit lower="-1.0" upper="3.5" velocity="0.5" effort="4000"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+  <!-- 传动装置配置 -->
+  <!-- 左叉水平传动 -->
+  <transmission name="base_link_to_fork_left_horizontal_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_link_to_fork_left_horizontal">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="base_link_to_fork_left_horizontal_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- 左叉垂直传动 -->
+  <transmission name="fork_left_horizontal_to_fork_left_vertical_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="fork_left_horizontal_to_fork_left_vertical">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="fork_left_vertical_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- 右叉水平传动 -->
+  <transmission name="base_link_to_fork_right_horizontal_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_link_to_fork_right_horizontal">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="base_link_to_fork_right_horizontal_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- 右叉垂直传动 -->
+  <transmission name="fork_right_horizontal_to_fork_right_vertical_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="fork_right_horizontal_to_fork_right_vertical">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="fork_right_vertical_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+          <robotNamespace>/</robotNamespace>
+          <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+      <jointName>rear_left_wheel_joint, rear_right_wheel_joint, front_left_steering_joint, front_right_steering_joint, front_right_wheel_joint, front_left_wheel_joint,base_link_to_fork_right_horizontal,fork_right_horizontal_to_fork_right_vertical,fork_left_horizontal_to_fork_left_vertical,base_link_to_fork_left_horizontal</jointName>
+      <updateRate>100</updateRate>
+      <robotNamespace>/$(arg roboname)</robotNamespace>
+      <alwaysOn>true</alwaysOn>
+    </plugin>
+  </gazebo>
+
+  <!-- <gazebo>
+      <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+          <publishOdometryTf>true</publishOdometryTf>
+          <commandTopic>cmd_velocity</commandTopic>
+          <odometryTopic>odom</odometryTopic>
+          <odometryFrame>odom</odometryFrame>
+          <odometryRate>0</odometryRate>
+          <robotBaseFrame>base_footprint</robotBaseFrame>
+          <cmdTimeout>1.0</cmdTimeout> 
+      </plugin>
+  </gazebo> -->
+  <gazebo>
+    <plugin name="p3d" filename="libgazebo_ros_p3d.so">
+      <!-- <robotNamespace>/my_robot</robotNamespace> -->
+      <bodyName>base_footprint</bodyName> <!-- 指定要跟踪的机器人链接 -->
+      <topicName>odom_p3d</topicName> <!-- 发布位姿的 ROS 话题名称 -->
+      <frameName>map</frameName> <!-- odom 坐标系 -->
+      <updateRate>100.0</updateRate> <!-- 发布频率 -->
+      <!-- <gaussianNoise>0.01</gaussianNoise> 模拟传感器噪声 -->
+      <!-- <gaussianNoise>0.0</gaussianNoise> 模拟传感器噪声 -->
+      <!-- <xyzOffsets>0 0 0</xyzOffsets> -->
+      <!-- <rpyOffsets>0 0 0</rpyOffsets> -->
+    </plugin>
+  </gazebo>
+
+
+</robot>

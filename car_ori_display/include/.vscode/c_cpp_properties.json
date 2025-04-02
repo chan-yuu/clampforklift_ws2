@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/nvidia/clamp_forklift_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/nvidia/clamp_forklift_ws/src/car_ori_display/include/**",
+        "/home/nvidia/clamp_forklift_ws/src/custom_rviz_plugin/include/**",
+        "/home/nvidia/clamp_forklift_ws/src/lslidar_sdk/lslidar_driver/include/**",
+        "/home/nvidia/clamp_forklift_ws/src/ndt_localizer/include/**",
+        "/home/nvidia/clamp_forklift_ws/src/perception/include/**",
+        "/home/nvidia/clamp_forklift_ws/src/realsense-ros/realsense2_camera/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-arm64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

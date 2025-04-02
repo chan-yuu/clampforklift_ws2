@@ -1,0 +1,7 @@
+<launch>
+    <rosparam command="load" file="$(find control)/config/controlparams.yaml"/>
+
+    <node name="FSM" pkg="control" type="Control_FSM" output="screen" >
+        <!-- <remap from="global_path" to="/run_hybrid_astar/searched_path" /> -->
+    </node>
+</launch>

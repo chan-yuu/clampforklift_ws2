@@ -1,0 +1,526 @@
+<?xml version="1.0"?>
+<robot name="GRobot">
+    <material name="blue"><color rgba="0 0 0.8 1"/></material>
+    <material name="white"><color rgba="1 1 1 1"/></material>
+
+    <link name="base_link">
+        <visual>
+            <geometry><box size="0.05 0.2 0.3"/></geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <!--=========================== head ==========================-->
+
+    <link name="neck_z">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="base_to_neck_z" type="continuous">
+        <parent link="base_link"/>
+        <child link="neck_z"/>
+        <origin xyz="0 0 0.15" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="head">
+        <visual>
+            <geometry><sphere radius="0.05"/></geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="neck_to_head" type="fixed">
+        <parent link="neck_z"/>
+        <child link="head"/>
+        <origin xyz="0 0 0.08" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+
+    <!--=========================== left arm ==========================-->
+
+    <link name="left_shoulder_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="base_to_left_shoulder_y" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_shoulder_y"/>
+        <origin xyz="0 0.1 0.15" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="left_shoulder_x">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 1.57079 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_shoulder_y_to_left_shoulder_x" type="continuous">
+        <parent link="left_shoulder_y"/>
+        <child link="left_shoulder_x"/>
+        <origin xyz="0 0.04 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="left_shoulder_z">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_shoulder_x_to_left_shoulder_z" type="continuous">
+        <parent link="left_shoulder_x"/>
+        <child link="left_shoulder_z"/>
+        <origin xyz="0 0 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="left_upper_arm">
+        <visual>
+            <geometry><cylinder length="0.14" radius="0.035"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="left_shoulder_to_left_upper_arm" type="fixed">
+        <parent link="left_shoulder_z"/>
+        <child link="left_upper_arm"/>
+        <origin xyz="0 0 -0.07" rpy="0 0 0"/>
+    </joint>
+
+    <link name="left_elbow_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_upper_arm_to_left_elbow_y" type="continuous">
+        <parent link="left_upper_arm"/>
+        <child link="left_elbow_y"/>
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="left_elbow_z">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_elbow_y_to_left_elbow_z" type="continuous">
+        <parent link="left_elbow_y"/>
+        <child link="left_elbow_z"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="left_fore_arm">
+        <visual>
+            <geometry><cylinder length="0.12" radius="0.03"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="left_elbow_to_left_fore_arm" type="fixed">
+        <parent link="left_elbow_z"/>
+        <child link="left_fore_arm"/>
+        <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+    </joint>
+
+    <!--=========================== right arm ==========================-->
+
+    <link name="right_shoulder_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="base_to_right_shoulder_y" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_shoulder_y"/>
+        <origin xyz="0 -0.1 0.15" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="right_shoulder_x">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 1.57079 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_shoulder_y_to_right_shoulder_x" type="continuous">
+        <parent link="right_shoulder_y"/>
+        <child link="right_shoulder_x"/>
+        <origin xyz="0 -0.04 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="right_shoulder_z">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_shoulder_x_to_right_shoulder_z" type="continuous">
+        <parent link="right_shoulder_x"/>
+        <child link="right_shoulder_z"/>
+        <origin xyz="0 0 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="right_upper_arm">
+        <visual>
+            <geometry><cylinder length="0.14" radius="0.035"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="right_shoulder_to_right_upper_arm" type="fixed">
+        <parent link="right_shoulder_z"/>
+        <child link="right_upper_arm"/>
+        <origin xyz="0 0 -0.07" rpy="0 0 0"/>
+    </joint>
+
+    <link name="right_elbow_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_upper_arm_to_right_elbow_y" type="continuous">
+        <parent link="right_upper_arm"/>
+        <child link="right_elbow_y"/>
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="right_elbow_z">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_elbow_y_to_right_elbow_z" type="continuous">
+        <parent link="right_elbow_y"/>
+        <child link="right_elbow_z"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="right_fore_arm">
+        <visual>
+            <geometry><cylinder length="0.12" radius="0.03"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="right_elbow_to_right_fore_arm" type="fixed">
+        <parent link="right_elbow_z"/>
+        <child link="right_fore_arm"/>
+        <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+    </joint>
+
+    <!--=========================== left leg ==========================-->
+
+    <link name="left_hip_z">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="base_to_left_hip_z" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_hip_z"/>
+        <origin xyz="0 0.1 -0.15" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="left_hip_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_hip_z_to_left_hip_y" type="continuous">
+        <parent link="left_hip_z"/>
+        <child link="left_hip_y"/>
+        <origin xyz="0 0 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="left_hip_x">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 1.57079 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_hip_y_to_left_hip_x" type="continuous">
+        <parent link="left_hip_y"/>
+        <child link="left_hip_x"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="left_thigh">
+        <visual>
+            <geometry><cylinder length="0.16" radius="0.05"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="left_hip_to_left_thigh" type="fixed">
+        <parent link="left_hip_x"/>
+        <child link="left_thigh"/>
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+    </joint>
+
+    <link name="left_knee_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_thigh_to_left_knee_y" type="continuous">
+        <parent link="left_thigh"/>
+        <child link="left_knee_y"/>
+        <origin xyz="0 0 -0.09" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="left_shank">
+        <visual>
+            <geometry><cylinder length="0.14" radius="0.04"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="left_knee_to_left_shank" type="fixed">
+        <parent link="left_knee_y"/>
+        <child link="left_shank"/>
+        <origin xyz="0 0 -0.07" rpy="0 0 0"/>
+    </joint>
+
+    <link name="left_ankle_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_shank_to_left_ankle_y" type="continuous">
+        <parent link="left_shank"/>
+        <child link="left_ankle_y"/>
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="left_ankle_x">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 1.57079 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="left_ankle_y_to_left_ankle_x" type="continuous">
+        <parent link="left_ankle_y"/>
+        <child link="left_ankle_x"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="left_foot">
+        <visual>
+            <geometry><box size="0.1 0.04 0.025"/></geometry>
+            <origin xyz="0.04 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="left_ankle_to_left_foot" type="fixed">
+        <parent link="left_ankle_x"/>
+        <child link="left_foot"/>
+        <origin xyz="0 0 -0.0125" rpy="0 0 0"/>
+    </joint>
+
+
+    <!--=========================== right leg ==========================-->
+
+    <link name="right_hip_z">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="base_to_right_hip_z" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_hip_z"/>
+        <origin xyz="0 -0.1 -0.15" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="right_hip_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_hip_z_to_right_hip_y" type="continuous">
+        <parent link="right_hip_z"/>
+        <child link="right_hip_y"/>
+        <origin xyz="0 0 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="right_hip_x">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 1.57079 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_hip_y_to_right_hip_x" type="continuous">
+        <parent link="right_hip_y"/>
+        <child link="right_hip_x"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="right_thigh">
+        <visual>
+            <geometry><cylinder length="0.16" radius="0.05"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="right_hip_to_right_thigh" type="fixed">
+        <parent link="right_hip_x"/>
+        <child link="right_thigh"/>
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+    </joint>
+
+    <link name="right_knee_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_thigh_to_right_knee_y" type="continuous">
+        <parent link="right_thigh"/>
+        <child link="right_knee_y"/>
+        <origin xyz="0 0 -0.09" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="right_shank">
+        <visual>
+            <geometry><cylinder length="0.14" radius="0.04"/></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="right_knee_to_right_shank" type="fixed">
+        <parent link="right_knee_y"/>
+        <child link="right_shank"/>
+        <origin xyz="0 0 -0.07" rpy="0 0 0"/>
+    </joint>
+
+    <link name="right_ankle_y">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_shank_to_right_ankle_y" type="continuous">
+        <parent link="right_shank"/>
+        <child link="right_ankle_y"/>
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="right_ankle_x">
+        <visual>
+            <geometry><cylinder length="0.06" radius="0.02"/></geometry>
+            <origin xyz="0 0 0" rpy="0 1.57079 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <joint name="right_ankle_y_to_right_ankle_x" type="continuous">
+        <parent link="right_ankle_y"/>
+        <child link="right_ankle_x"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="right_foot">
+        <visual>
+            <geometry><box size="0.1 0.04 0.025"/></geometry>
+            <origin xyz="0.04 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="right_ankle_to_right_foot" type="fixed">
+        <parent link="right_ankle_x"/>
+        <child link="right_foot"/>
+        <origin xyz="0 0 -0.0125" rpy="0 0 0"/>
+    </joint>
+
+
+
+</robot>

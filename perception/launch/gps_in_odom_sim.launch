@@ -1,0 +1,22 @@
+<launch>
+
+    <!-- <node name="gps_imu_node" pkg="perception" type="gps_imu_pub" output="screen">
+        <param name="loopRate" value="100" />
+        <param name="ifname" value="can1" />
+        <param name="global_pos_X" value="0" />
+        <param name="global_pos_Y" value="0" />
+    </node> -->
+
+    <param name="map_in_world_x" value="0.06849172275572232"/>
+    <param name="map_in_world_y" value="0.013770303719808193"/>
+    <param name="map_in_world_z" value="-2.508647266395667"/>
+    <param name="map_in_world_roll" value="-0.009211985648043076"/>
+    <param name="map_in_world_pitch" value="-0.4103630084448374"/>
+    <param name="map_in_world_yaw" value="0.21520557617622127"/>
+
+    <param name="location_gps" value="false" />
+    
+    <node pkg="perception" type="tf_odom_publisher_sim" name="tf_odom_publisher_sim" output="screen">
+    </node>
+
+</launch>

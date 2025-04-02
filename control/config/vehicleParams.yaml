@@ -1,0 +1,98 @@
+can_feedback:
+  ifname: "can0"
+  debug_mode: false
+
+
+can_pub:
+    ifname: "can0"
+    Rate: 50
+    can_pub_openloop: 0
+    wheel2steering: 1
+    debug_mode: false
+
+    openloop:
+      debug_mode: false
+      IPC_En: 1
+      Target_velocity: 0  #加包车协议对应的油门开合度 范围0-65,精度0.1％
+      Target_gear: 0  #0:N  1:R  3:D
+      Target_steering_angle: 0
+      brake_enable: 0
+      value_brake: 0
+      FY: 0               #0不控制 1俯仰
+      FY_Position: 0  
+      UpDown: 0
+      UpDown_Position: 0  #0-4482
+      work_mode: 0 #作业控制模式  0：未选中任何模式 1：夹抱模式 2：横移模式 
+      clamp_width: 0 # 夹抱宽度 0-1352mm,精度1mm
+      lateral_movement_position_mm: -0 #横移位置 （最大最小值参考反馈，左正右负）,精度1mm,signed类型
+      TurnLight: 0 #转向灯控制  0x00：归位；  0x01：左转向；  0x02：右转向
+
+speed_params:
+  # <85
+  num_smaller_path_speed_max : 1.0
+  num_smaller_path_speed_min : 0.4
+  # >=85
+  num_normal_path_speed_max : 2
+  num_normal_path_speed_min : 0.25
+  speed_very_high : 2.0 # 直线速
+  speed_high : 1.5 # 高速
+  speed_medium : 1.2 # 中速
+  speed_medium_medium : 0.6 # 中速
+  speed_low : 0.4 # 低速
+  speed_very_low : 0.25 # 非常低的速度
+
+control:
+  pd_controller:
+    CTE_Kp_H: 200.0
+    CTE_Kd_H: 5.0
+    Head_Kp_H: 3.5
+    Head_Kd_H: 3.0
+
+    CTE_Kp_M: 50.0
+    CTE_Kd_M: 2.5
+    Head_Kp_M: 1.2
+    Head_Kd_M: 1.0
+
+    CTE_Kp_L: 30.0
+    CTE_Kd_L: 1.5
+    Head_Kp_L: 1.0
+    Head_Kd_L: 0.5
+
+    CTE_Kp_VL: 10.0
+    CTE_Kd_VL: 0.5
+    Head_Kp_VL: 0.2
+    Head_Kd_VL: 0.05
+
+  stanley_controller:
+    kp: 1.0 # 放大了一点
+    max_steering_angle: 1.22 # 70度 1.22 65-1.13 60-1.04 降低了最大的角度
+    wheelbase: 3.5 # stanley中原本没有轴距的要求wheelbase 现在的轴距完全不是1.77了，而是front_front_axle 和base_footprint之间的距离
+    kp_dhead: 1.0 # 添加了dhead对于控制的影响值 希望车辆在直线路径中尽快收敛 也希望车辆在含有转向的路径中的航向偏差越小越好
+    kp_front: 0.5 # 定位点预瞄
+    kp_normal: 0.2
+
+
+  control_main_node:
+    pre_index: 0 # 不能过于预瞄，容易导致方向不正    航向预瞄点个数 放大了一点 ---BUG不能放大太多，会导致放货后回到观察点时倒车太少
+    
+    pre_index_normal: 0
+    pre_index_front: 0
+    
+    GlobalTargetSpeed: 1.2 # 全局规划目标速度
+    LocalTargetSpeed: 0.5  # 局部规划目标速度
+    have_local_: false  #true时只执行局部规划，全局路径发也不影响； 为false时，先执行全局再执行局部
+    debug_mode: false
+    DeletedPathSize: 6 #删除路径点个数 6*0.1=0.5m不走，推荐的路径最短为1m左右
+    press: 5000 # 数值越大夹的更紧 最大5000
+    is_print: true # can 部分的打印
+
+    # 实车
+    Rotation_angle: 1.2
+    Throttle_Rotation: 0.2
+    Reverse_distance: 1.0
+    Steering_compensation: 0.103 # 转向补偿角
+    # 仿真
+    # Rotation_angle: 1.1
+    # Throttle_Rotation: 0.1
+    # Reverse_distance: 1.0
+    # Steering_compensation: 0.

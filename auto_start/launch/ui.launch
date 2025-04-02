@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<!-- Debug mode 是否开启终端调试 true false -->
+	<param name="debug_mode" value="false" />
+
+	<node name="auto_start" pkg="auto_start" type="forklift_start_sim.py" />
+</launch>

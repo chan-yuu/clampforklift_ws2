@@ -1,0 +1,42 @@
+<launch>
+
+    <!-- ==============gps================== -->
+    <include file="$(find perception)/launch/gps.launch"/>
+    
+
+    <param name="location_gps" value="false" />
+    <!-- ===========gps_in_ndt_map========== -->
+	<rosparam file="$(find perception)/config/map_in_gps.yaml" command="load" />
+
+<!-- x: 525792.1223903553
+y: 4316547.543132742
+z: -3.38117414009824
+roll: 0.6713813651061207
+pitch: 0.5523582077246071
+yaw: 79.35192219925489 -->
+    <!-- <param name="map_in_world_x" value="525792.6743180722"/>
+    <param name="map_in_world_y" value="4316546.982002216"/>
+    <param name="map_in_world_z" value="-3.221"/>
+    <param name="map_in_world_roll" value="0.62"/>
+    <param name="map_in_world_pitch" value="-0.4"/>
+    <param name="map_in_world_yaw" value="78.91"/> -->
+    <node pkg="perception" type="tf_odom_publisher" name="tf_odom_publisher" output="screen">
+    </node>
+    <!-- ================================== -->
+
+
+    <!-- ==============ndt_localizer================== -->
+    <include file="$(find ndt_localizer)/launch/ndt_localizer.launch"/>
+    <!-- ============================================= -->
+
+
+    <!-- ==============odom================== -->
+    <param name="source_frame" value="front_axle" />
+    <param name="target_frame" value="map" />
+    <param name="odom_frame" value="map"/>
+    <param name="child_frame" value="front_front_axle"/>
+    <node name="odom_pub" pkg="perception" type="odom_pub" output="screen">
+    </node>
+    <!-- ================================ -->
+
+</launch>

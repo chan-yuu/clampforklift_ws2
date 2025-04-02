@@ -1,0 +1,46 @@
+control:
+  stanley_controller:
+    kp: 1.5 # 放大了一点
+    max_steering_angle: 1.12 # 70度 65-1.13 60-1.04 降低了最大的角度
+    wheelbase: 1.77 # stanley中原本没有轴距的要求wheelbase 现在的轴距完全不是1.77了，而是front_front_axle 和base_footprint之间的距离
+    kp_dhead: 1.0 # 添加了dhead对于控制的影响值 希望车辆在直线路径中尽快收敛 也希望车辆在含有转向的路径中的航向偏差越小越好
+    kp_rear_cte: 0.0
+    end_dis_fix: 0.0
+
+  control_main_node:
+    pre_index: 0 # 不能过于预瞄，容易导致方向不正    航向预瞄点个数 放大了一点 ---BUG不能放大太多，会导致放货后回到观察点时倒车太少
+    GlobalTargetSpeed: 1.0 # 全局规划目标速度
+    LocalTargetSpeed: 0.5  # 局部规划目标速度
+    have_local_: false  #true时只执行局部规划，全局路径发也不影响； 为false时，先执行全局再执行局部
+    debug_mode: false
+    DeletedPathSize: 6 #删除路径点个数 6*0.1=0.5m不走，推荐的路径最短为1m左右
+    SIM: true
+
+can_feedback:
+  ifname: "can0"
+  loopRate: 100 # 注意
+
+
+can_pub:
+    ifname: "can0"
+    Rate: 100
+    openloop: 0
+    wheel2steering: 1
+    debug_mode: true
+
+    openloop:
+      debug_mode: false
+      IPC_En: 1
+      Target_velocity: 0  #加包车协议对应的油门开合度 范围0-65,精度0.1％
+      Target_gear: 2  #0:N  1:R  3:D
+      Target_steering_angle: 0
+      brake_enable: 0
+      value_brake: 0
+      FY: 0               #0不控制 1俯仰
+      FY_Position: 0  
+      UpDown: 0
+      UpDown_Position: 0  #0-4482
+      work_mode: 0 #作业控制模式  0：未选中任何模式 1：夹抱模式 2：横移模式 
+      clamp_width: 0 # 夹抱宽度 0-1352mm,精度1mm
+      lateral_movement_position_mm: -0 #横移位置 （最大最小值参考反馈，左正右负）,精度1mm,signed类型
+      TurnLight: 0 #转向灯控制  0x00：归位；  0x01：左转向；  0x02：右转向

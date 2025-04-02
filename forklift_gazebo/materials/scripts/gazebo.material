@@ -1,0 +1,54 @@
+material Gazebo/CustomTexture
+{
+    technique
+    {
+        pass
+        {
+            ambient 1.0 1.0 1.0 1
+            diffuse 1.0 1.0 1.0 1
+            specular 0.5 0.5 0.5 1
+            emissive 0 0 0 1
+            texture_unit
+            {
+                texture file:///home/cyun/forklift_sim_ws/src/forklift_gazebo/materials/textures/Travertine003.png
+            }
+        }
+    }
+}
+
+
+material Custom/Orange
+{
+    technique
+    {
+        pass
+        {
+            ambient 0.8 0.4 0.1 1
+            diffuse 0.8 0.4 0.1 1
+            specular 0.5 0.5 0.5 1
+            emissive 0 0 0 1
+        }
+    }
+}
+
+material Custom/RedGlow
+{
+  technique
+  {
+    pass ambient
+    {
+      ambient 1 0 0
+      diffuse 1 0 0
+      emissive 1 0 0
+      specular 0 0 0 128
+    }
+
+    pass light
+    {
+      ambient 1 0 0
+      diffuse 1 0 0
+      emissive 1 0 0
+      specular 1 0 0 128
+    }
+  }
+}

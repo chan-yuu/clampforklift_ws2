@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<arg name="roboname" default="clampfork"/>
+  	<param name="robot_description" command="$(find xacro)/xacro '$(find forklift_description)/urdf/real_clamp_fork.xacro' roboname:=$(arg roboname)" />
+
+	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+		<param name="publish_frequency" value="100"/>
+		<param name="use_tf_static" value="true"/>
+	</node>
+
+	<node pkg="rviz" name="rviz_urdf" type="rviz" args="-d $(find forklift_description)/rviz/clamp.rviz"/>
+
+</launch>

@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="joy" type="joy_node" name="joy_node" />
+    <!-- <node pkg="turtlesim" type="turtlesim_node" name="turtlesim_node" /> -->
+    <node pkg="joy_control" type="cotton_joy.py" name="cotton_joy" output="screen"/>
+
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+    <!-- 启动 Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(find your_package_name)/worlds/empty.world"/> -->
+    </include>
+
+    <!-- 解析 xacro 并生成 URDF -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find clamp_fork)/urdf/test/test.xacro"/>
+
+    <!-- 在 Gazebo 中 spawn 机器人 -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model my_robot -x 0 -y 0 -z 0" output="screen"/>
+
+</launch>

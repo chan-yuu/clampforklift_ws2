@@ -1,0 +1,77 @@
+digraph {
+	compound=true;outputmode=nodesfirst;labeljust=l;nodesep=0.5;minlen=2;mclimit=5;clusterrank=local;ranksep=0.75;ordering="";
+subgraph "cluster_/SM_ROOT" {
+"color"="#00000000";
+"fillcolor"="#0000000F";
+"/SM_ROOT/__proxy__"  ["URL"="/SM_ROOT", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="SM_ROOT"];
+subgraph "cluster_/SM_ROOT/__outcomes__" {
+"style"="rounded,filled";
+"rank"="sink";
+"color"="#FFFFFFFF";
+"fillcolor"="#FFFFFF00";
+"/SM_ROOT:succeed"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="succeed", "URL"="/SM_ROOT:succeed"];
+"/SM_ROOT:preempted"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="preempted", "URL"="/SM_ROOT:preempted"];
+"/SM_ROOT:aborted"  ["shape"="box", "height"="0.3", "style"="filled,rounded", "fontsize"="12", "fillcolor"="#FE464f", "color"="#780006", "fontcolor"="#780006", "label"="", "xlabel"="aborted", "URL"="/SM_ROOT:aborted"];
+}
+"/SM_ROOT/HIGH_SPEED_TEST_STATE"  ["style"="filled,setlinewidth(5)", "color"="#5C7600FF", "fillcolor"="#C0F700FF", "label"="HIGH_SPEED_TEST_STATE", "URL"="/SM_ROOT/HIGH_SPEED_TEST_STATE"];
+subgraph "cluster_/SM_ROOT/SELF_INSPECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/SELF_INSPECTION/__proxy__"  ["URL"="/SM_ROOT/SELF_INSPECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="SELF_INSPECTION"];
+}
+"/SM_ROOT/HANDLE_CLOUD_ORDER"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="HANDLE_CLOUD_ORDER", "URL"="/SM_ROOT/HANDLE_CLOUD_ORDER"];
+subgraph "cluster_/SM_ROOT/HW_SETUP" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/HW_SETUP/__proxy__"  ["URL"="/SM_ROOT/HW_SETUP", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="HW_SETUP"];
+}
+subgraph "cluster_/SM_ROOT/PICKUP_SUB_SECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/PICKUP_SUB_SECTION/__proxy__"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="PICKUP_SUB_SECTION"];
+}
+subgraph "cluster_/SM_ROOT/HW_BACKUP" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/HW_BACKUP/__proxy__"  ["URL"="/SM_ROOT/HW_BACKUP", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="HW_BACKUP"];
+}
+"/SM_ROOT/CAMERA_TASK_2"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="CAMERA_TASK_2", "URL"="/SM_ROOT/CAMERA_TASK_2"];
+subgraph "cluster_/SM_ROOT/HW_PLAN_SECOND_PICKUP" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="HW_PLAN_SECOND_PICKUP"];
+}
+subgraph "cluster_/SM_ROOT/STACK_AND_MOVE_SECTION" {
+"style"="filled,setlinewidth(2),rounded";
+"color"="#000000FF";
+"fillcolor"="gray";
+"/SM_ROOT/STACK_AND_MOVE_SECTION/__proxy__"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION", "shape"="plaintext", "color"="gray", "fontsize"="18", "fontweight"="18", "rank"="min", "height"="0.01", "label"="STACK_AND_MOVE_SECTION"];
+}
+"/SM_ROOT/GLOBAL_PICKUP_3"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_PICKUP_3", "URL"="/SM_ROOT/GLOBAL_PICKUP_3"];
+"/SM_ROOT/ADJUST_HEADING"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="ADJUST_HEADING", "URL"="/SM_ROOT/ADJUST_HEADING"];
+"/SM_ROOT/ADJUST_DESIGN_HEADING"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="ADJUST_DESIGN_HEADING", "URL"="/SM_ROOT/ADJUST_DESIGN_HEADING"];
+"/SM_ROOT/GLOBAL_PICKUP_FINAL"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="GLOBAL_PICKUP_FINAL", "URL"="/SM_ROOT/GLOBAL_PICKUP_FINAL"];
+"/SM_ROOT/FINISH"  ["style"="filled,setlinewidth(2)", "color"="#000000FF", "fillcolor"="#FFFFFFFF", "label"="FINISH", "URL"="/SM_ROOT/FINISH"];
+"/SM_ROOT/HIGH_SPEED_TEST_STATE" -> "/SM_ROOT/FINISH"  ["URL"="/SM_ROOT/HIGH_SPEED_TEST_STATE:finish:/SM_ROOT/FINISH", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/SELF_INSPECTION/__proxy__" -> "/SM_ROOT/HANDLE_CLOUD_ORDER"  ["URL"="/SM_ROOT/SELF_INSPECTION:all_finished:/SM_ROOT/HANDLE_CLOUD_ORDER", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/SELF_INSPECTION"];
+"/SM_ROOT/HANDLE_CLOUD_ORDER" -> "/SM_ROOT/HW_SETUP/__proxy__"  ["URL"="/SM_ROOT/HANDLE_CLOUD_ORDER:finish:/SM_ROOT/HW_SETUP", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/HW_SETUP"];
+"/SM_ROOT/HW_SETUP/__proxy__" -> "/SM_ROOT/PICKUP_SUB_SECTION/__proxy__"  ["URL"="/SM_ROOT/HW_SETUP:all_finished:/SM_ROOT/PICKUP_SUB_SECTION", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/HW_SETUP", "lhead"="cluster_/SM_ROOT/PICKUP_SUB_SECTION"];
+"/SM_ROOT/PICKUP_SUB_SECTION/__proxy__" -> "/SM_ROOT/HW_BACKUP/__proxy__"  ["URL"="/SM_ROOT/PICKUP_SUB_SECTION:pickup_sub_finish:/SM_ROOT/HW_BACKUP", "fontsize"="12", "label"="", "xlabel"="pickup_sub_finish", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/PICKUP_SUB_SECTION", "lhead"="cluster_/SM_ROOT/HW_BACKUP"];
+"/SM_ROOT/HW_BACKUP/__proxy__" -> "/SM_ROOT/CAMERA_TASK_2"  ["URL"="/SM_ROOT/HW_BACKUP:all_finished:/SM_ROOT/CAMERA_TASK_2", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/HW_BACKUP"];
+"/SM_ROOT/CAMERA_TASK_2" -> "/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__"  ["URL"="/SM_ROOT/CAMERA_TASK_2:finish:/SM_ROOT/HW_PLAN_SECOND_PICKUP", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/HW_PLAN_SECOND_PICKUP"];
+"/SM_ROOT/HW_PLAN_SECOND_PICKUP/__proxy__" -> "/SM_ROOT/STACK_AND_MOVE_SECTION/__proxy__"  ["URL"="/SM_ROOT/HW_PLAN_SECOND_PICKUP:all_finished:/SM_ROOT/STACK_AND_MOVE_SECTION", "fontsize"="12", "label"="", "xlabel"="all_finished", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/HW_PLAN_SECOND_PICKUP", "lhead"="cluster_/SM_ROOT/STACK_AND_MOVE_SECTION"];
+"/SM_ROOT/STACK_AND_MOVE_SECTION/__proxy__" -> "/SM_ROOT/GLOBAL_PICKUP_3"  ["URL"="/SM_ROOT/STACK_AND_MOVE_SECTION:stack_and_move_finish:/SM_ROOT/GLOBAL_PICKUP_3", "fontsize"="12", "label"="", "xlabel"="stack_and_move_finish", "style"="setlinewidth(2)", "ltail"="cluster_/SM_ROOT/STACK_AND_MOVE_SECTION"];
+"/SM_ROOT/GLOBAL_PICKUP_3" -> "/SM_ROOT/ADJUST_HEADING"  ["URL"="/SM_ROOT/GLOBAL_PICKUP_3:finish:/SM_ROOT/ADJUST_HEADING", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/ADJUST_HEADING" -> "/SM_ROOT/GLOBAL_PICKUP_FINAL"  ["URL"="/SM_ROOT/ADJUST_HEADING:finish:/SM_ROOT/GLOBAL_PICKUP_FINAL", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/ADJUST_DESIGN_HEADING" -> "/SM_ROOT/GLOBAL_PICKUP_FINAL"  ["URL"="/SM_ROOT/ADJUST_DESIGN_HEADING:finish:/SM_ROOT/GLOBAL_PICKUP_FINAL", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)"];
+"/SM_ROOT/GLOBAL_PICKUP_FINAL" -> "/SM_ROOT/PICKUP_SUB_SECTION/__proxy__"  ["URL"="/SM_ROOT/GLOBAL_PICKUP_FINAL:finish:/SM_ROOT/PICKUP_SUB_SECTION", "fontsize"="12", "label"="", "xlabel"="finish", "style"="setlinewidth(2)", "lhead"="cluster_/SM_ROOT/PICKUP_SUB_SECTION"];
+"/SM_ROOT/FINISH" -> "/SM_ROOT:succeed"  ["URL"="/SM_ROOT/FINISH:succeed:/SM_ROOT/succeed", "fontsize"="12", "label"="", "xlabel"="succeed", "style"="setlinewidth(2)", "color"="#00000055"];
+"/SM_ROOT/__proxy__" -> "/SM_ROOT/HIGH_SPEED_TEST_STATE"  ["URL"="/SM_ROOT/__proxy__::/SM_ROOT/HIGH_SPEED_TEST_STATE", "fontsize"="12", "label"="", "xlabel"="", "style"="setlinewidth(2)"];
+}
+
+}

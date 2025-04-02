@@ -1,0 +1,1 @@
+sudo apt install ros-noetic-marti-common* ros-noetic-swri-transform* ros-noetic-marti-sensor* ros-noetic-marti* ros-noetic-swri*

@@ -1,0 +1,13 @@
+global_costmap:
+  global_frame: map  # 定义全局代价地图使用的坐标系，这里为地图坐标系 "map"。
+  robot_base_frame: base_footprint  # 定义机器人底盘的坐标系，这里为 "base_link"。
+  update_frequency: 1.0  # 更新代价地图的频率，单位为 Hz。
+  publish_frequency: 0.5  # 发布代价地图的频率，单位为 Hz。
+
+  transform_tolerance: 0.5  # 变换的容忍度，单位为秒，表示在时间同步时的容忍范围。
+  
+  # 定义代价地图的插件，这些插件决定了如何生成和更新代价地图
+  plugins:
+    - {name: static_layer,            type: "costmap_2d::StaticLayer"}  # 使用静态层插件，加载静态地图信息。
+    - {name: obstacle_layer,          type: "costmap_2d::VoxelLayer"}   # 使用体素层插件，处理三维障碍物信息。
+    - {name: inflation_layer,         type: "costmap_2d::InflationLayer"} # 使用膨胀层插件，扩展障碍物区域，增加安全边界。

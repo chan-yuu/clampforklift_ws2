@@ -1,0 +1,83 @@
+# 算法模式参数，默认为 false
+use_sim: true
+use_camera_det: false
+
+smach:
+  adjust_steering_angle: 1.2 # 仿真1.1，实车1.2
+  adjust_steering_angle_sim: 1.1
+  adjust_throttle: 0.2 # 实车0.2 仿真 0.15
+  current_yaw_reverse_distance: 1.25 # 右转值
+  goal_yaw_reverse_distance: 1.31
+  # current_yaw_reverse_distance: 1.34 # 左转值
+  # goal_yaw_reverse_distance: -1.39
+  
+  lateral_distance: 0.8  # 横移的距离
+
+# 模拟环境参数
+sim:
+  # 单个货物在模拟环境中的高度
+  single_cargo_height: 0.1
+  # 两个货物之间在模拟环境中的高度
+  height_between_two_cargos: 0.5
+  # 两个货物叠在一起在模拟环境中的高度
+  two_cargos_height: 0.8
+  # 高于两个货物在模拟环境中的高度
+  above_two_cargos_height: 0.8
+  # 夹取宽度在模拟环境中的值
+  clamping_width: 0.05
+  # 张开宽度在模拟环境中的值
+  open_width: 0.6
+
+# 真实环境参数
+real:
+  test_high_speed_control: false
+  test_obstacle: false
+  single_cargo_length: 1.34
+  # 单个货物在真实环境中的高度
+  single_cargo_height: 50
+  # 一个半
+  single_cargo_height_half: 100
+  # 两个货物之间在真实环境中的高度
+  height_between_two_cargos: 330
+  # 两个货物叠在一起在真实环境中的高度
+  two_cargos_height: 514
+  # 高于两个货物在真实环境中的高度
+  above_two_cargos_height: 710
+  above_two_cargos_height_max: 1125
+  # 夹取宽度在真实环境中的值
+  clamping_width: 10
+  # 张开宽度在真实环境中的值
+  open_width: 380
+  # 叠放时的宽度
+  open_width_: 360
+  # 放货时的宽度
+  open_width_pickoff: 110
+  # 最终放货高度在真实环境中的值
+  pickoff_height_: 35
+
+  # use_camera_det: true
+  use_cloud: false
+  work_direction: 2 # 2-右边放 1-左边放
+
+
+conveyer_belt_point_sim:
+  # - [31.0184,11.0397,0.124]
+  # - [-0.0070,0.0126,0.6918,0.7219]
+  - [-24.81,6.6,0.0]
+  - [-0.0,0.0,0.71,0.7]
+# observer_point:
+#   # - [34.2503,5.6540,0.2125]
+#   # - [-0.0089,0.0112,0.8433,0.5373]
+
+#   - [48.9544,24.2392,0.1080]
+#   - [0.0067,-0.0112,-0.4599,0.8879]
+
+delivery_point:
+  # - [43.2089,-6.4200,0.4872]
+  # - [-0.0113,0.0194,0.9996,0.0186]
+  # - [20.6325,5.1310,0.0988]
+  # - [0.0122,-0.0218,-0.9996,0.0108]
+  # - [25.5553,-22.6006,0.7078]
+  # - [-0.0149,0.0153,0.9989,0.0428]
+  - [-5.0265,-24.9731,0.0000]
+  - [0.0000,0.0000,-0.7121,0.7020]

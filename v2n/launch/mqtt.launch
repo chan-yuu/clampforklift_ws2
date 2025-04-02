@@ -1,0 +1,7 @@
+<launch>
+
+  <node pkg="v2n" type="pub_cloud" name="pub_cloud" output="screen" />
+  
+  <node pkg="v2n" type="sub_cloud" name="sub_cloud" output="screen" />
+
+</launch>

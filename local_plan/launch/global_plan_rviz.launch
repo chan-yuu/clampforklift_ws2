@@ -1,0 +1,13 @@
+<launch>
+    <!-- dis_odom map -->
+
+
+    <rosparam file="$(find hybrid_a_star)/config/planner_params.yaml" command="load"/>
+
+    <node pkg="hybrid_a_star" type="run_hybrid_astar" name="run_hybrid_astar" output="screen">
+        <remap from="global_map" to="map"/>
+    </node>
+
+    <node pkg="hybrid_a_star" name="hybrid_a_star" type="pub_point_path"/>
+
+</launch>

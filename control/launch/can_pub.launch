@@ -1,0 +1,4 @@
+<launch>
+    <rosparam command="load" file="$(find control)/config/vehicleParams.yaml"/>
+    <node pkg="control" type="can_pub" name="can_pub" output="screen"/>
+</launch>

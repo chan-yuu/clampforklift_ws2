@@ -1,0 +1,4 @@
+<launch>
+    <node name="gps_sim_node" pkg="perception" type="gps_sim_pub" output="screen">
+    </node>
+</launch>

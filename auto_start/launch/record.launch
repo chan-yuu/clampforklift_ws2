@@ -1,0 +1,11 @@
+<launch>
+  <!-- 定义参数，决定使用哪个输入源 -->
+
+  <!-- 启动节点 -->
+  <node pkg="auto_start" type="record_ui.py" name="odom_recorder" output="screen">
+    <param name="input_source" value="odom"/>  <!-- 可选值: 'odom', 'gps_imu', 'map_pose' -->
+    <param name="axle_topic" value="front_axle"/>  <!-- 可选值: 'odom', 'gps_imu', 'map_pose' -->
+
+    <param name="distance_threshold" value="0.1"/>  <!-- 可选值: 'odom', 'gps_imu', 'map_pose' -->
+  </node>
+</launch>

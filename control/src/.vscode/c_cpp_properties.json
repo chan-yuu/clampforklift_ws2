@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/nvidia/clamp_forklift_ws2/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/camera_dev/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/car_ori_display/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/control/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/fusion_pointclouds/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/hybrid_a_star/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/lidar_camera_det/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/lslidar_sdk/lslidar_driver/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/ndt_localizer/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/perception/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/smach_fork/include/**",
+        "/home/nvidia/clamp_forklift_ws2/src/v2n/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-arm64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

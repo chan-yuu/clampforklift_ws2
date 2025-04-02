@@ -1,0 +1,34 @@
+<launch>
+
+  <node pkg="mapviz" type="mapviz" name="mapviz"></node>
+
+  <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" >
+    <param name="local_xy_frame" value="/map"/>
+    <param name="local_xy_origin" value="swri"/>
+    <rosparam param="local_xy_origins">
+      [{ name: swri,
+         latitude: 38.9973678,
+         longitude: 117.2978343,
+         altitude: 0.38214111328,
+         heading: 0.0},
+         
+       { name: back_40,
+         latitude: 38.9973678,
+         longitude: 117.2978343,
+         altitude: 0.38299942016499,
+         heading: 0.0}]
+    </rosparam>
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="swri_transform" args="0 0 0 0 0 0 /map /origin 100"  />
+
+</launch>
+
+
+
+
+<!-- http://t0.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={level}&TILEROW={y}&TILECOL={x}&tk=1cfe06711bc22d31762c8884d41d68f0
+
+http://t0.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={level}&TILEROW={x}&TILECOL={y}&tk=1cfe06711bc22d31762c8884d41d68f0
+
+http://t0.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={level}&TILEROW={y}&TILECOL={x}&tk=375f936acc7c22013f7b7b96559094a7 -->

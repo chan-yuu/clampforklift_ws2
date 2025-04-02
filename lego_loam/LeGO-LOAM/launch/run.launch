@@ -1,0 +1,51 @@
+<launch>
+    
+    <!--- Sim Time -->
+    <param name="/use_sim_time" value="false" />
+
+    <!--- Run Rviz-->
+    <node pkg="rviz" type="rviz" name="rviz_legoloam" args="-d $(find lego_loam)/launch/test.rviz" />
+
+    <arg name="file_dir"  default="$(find lego_loam)/map/"/>
+    <!-- map to init transform -->
+    <arg name="x"  default="0.0"/>
+    <arg name="y"  default="0.0"/>
+    <arg name="z"  default="0.0"/>
+    <arg name="roll"  default="1.570795"/>
+    <arg name="pitch"  default="0.0"/>
+    <arg name="yaw"  default="1.570795"/>
+
+    <!--- TF -->
+    <node pkg="tf" type="static_transform_publisher" name="camera_init_to_map"  args="0 0 0 1.570795   0        1.570795 map    camera_init 10" />
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera" args="0 0 0 -1.570795 -1.570795 0   camera_est base_link_est   10" />
+
+    <!-- Topic Interface -->
+    <arg name="pointCloudTopic" value="/velodyne_points"/>
+    <!--- LeGO-LOAM -->    
+    <node pkg="lego_loam" type="imageProjection"    name="imageProjection"    output="screen">
+        <param name="pointCloudTopic" value="$(arg pointCloudTopic)"/>
+    </node>
+
+    <node pkg="lego_loam" type="featureAssociation" name="featureAssociation" output="screen"/>
+    
+    
+    <node pkg="lego_loam" type="mapOptmization"     name="mapOptmization"     output="screen">
+        <param name="file_dir" value="$(arg file_dir)"/>
+
+        <param name="x" value="$(arg x)"/>
+        <param name="y" value="$(arg y)"/>
+        <param name="z" value="$(arg z)"/>
+        <param name="roll" value="$(arg roll)"/>
+        <param name="pitch" value="$(arg pitch)"/>
+        <param name="yaw" value="$(arg yaw)"/>
+        <!-- <param name="lidarTopic" value="/image_rect_color/image_rect_color"/> -->
+        <!-- <param name="imuTopic" value="/imu"/> -->
+        <!-- <param name="pointCloudTopic" value="/kitti/velo/pointcloud"/> -->
+        <!-- <param name="pointCloudTopic" value="/rslidar_points"/> -->
+        <param name="pointCloudTopic" value="$(arg pointCloudTopic)"/>
+        <!-- <param name="pointCloudTopic" value="/carla/ego_vehicle/lidar"/> -->
+
+    </node>
+    <node pkg="lego_loam" type="transformFusion"    name="transformFusion"    output="screen"/>
+
+</launch>

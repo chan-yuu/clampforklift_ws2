@@ -1,0 +1,26 @@
+wire_pub_node:
+  ifname: "can0"
+  Rate: 100
+  openloop: 0
+  wheel2steering: 1
+  debug_mode: true
+
+openloop:
+  IPC_En: 1
+  Target_velocity: 0  #//加包车协议对应的油门开合度 范围0-65,精度0.1％
+  Target_gear: 0  #0:N  1:R  3:D
+  Target_steering_angle: 0
+  brake_enable: 0
+  value_brake: 0
+  FY: 0               #0不控制 1俯仰
+  FY_Position: 0  
+  UpDown: 0
+  UpDown_Position: 0  #0-4482
+  work_mode: 0 #//作业控制模式  0：未选中任何模式 1：夹抱模式 2：横移模式 
+  clamp_width: 0 # 夹抱宽度 0-1352mm,精度1mm
+  lateral_movement_position_mm: -0 #横移位置 （最大最小值参考反馈，左正右负）,精度1mm,signed类型
+  TurnLight: 0 #//转向灯控制  0x00：归位；  0x01：左转向；  0x02：右转向
+  
+can_feedback:
+  ifname: "can0"
+  loopRate: "100"

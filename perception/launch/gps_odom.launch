@@ -1,0 +1,13 @@
+<launch>
+    <node name="gps_imu_node" pkg="perception" type="gps_imu_pub" output="screen">
+        <param name="loopRate" value="100" />
+        <param name="ifname" value="can1" />
+        <param name="global_pos_X" value="0" />
+        <param name="global_pos_Y" value="0" />
+    </node>
+
+
+    <node name="gps_odom" pkg="perception" type="gps_odom" output="screen">
+    </node>
+
+</launch>

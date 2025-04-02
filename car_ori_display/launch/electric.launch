@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<rosparam file="$(find car_ori_display)/config/electric_fence_config.yaml" command="load"/>
+
+	<!-- 电子围栏 -->
+	<node pkg="car_ori_display" type="electric_fence.py" name="electric_fence" output="screen">
+	</node>
+
+	<!-- 在自己电脑上显示我们的画面会不会更好！！！！ -->
+    <node pkg="rviz" type="rviz" name="rviz_ui" args="-d $(find car_ori_display)/rviz/display.rviz"/>
+
+</launch>

@@ -1,0 +1,12 @@
+
+   <launch>
+
+     <!-- 加载YAML文件中的参数 -->
+    <!-- 默认都要显示终端 -->
+    <param name="debug_mode" value="true"/> 
+
+     <!-- 定义节点 -->
+     <node pkg="v2n" type="agv_status_report.py" name="agv_status_report" output="screen" />
+     <node pkg="v2n" type="sub_cloud.py" name="sub_cloud" output="screen" />
+
+   </launch>

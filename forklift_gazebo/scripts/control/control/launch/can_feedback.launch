@@ -1,0 +1,6 @@
+<launch>
+
+    <rosparam command="load" file="$(find control)/config/vehicleParams.yaml"/>
+    <node pkg="control" type="can_feedback" name="can_feedback" output="screen"/>
+
+</launch>

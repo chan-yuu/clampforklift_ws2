@@ -1,0 +1,14 @@
+local_costmap:
+  global_frame: map  # 定义局部代价地图使用的坐标系，这里为地图坐标系 "map"。
+  robot_base_frame: base_link  # 定义机器人底盘的坐标系，这里为 "base_link"。
+  update_frequency: 5.0  # 更新局部代价地图的频率，单位为 Hz。
+  publish_frequency: 2.0  # 发布局部代价地图的频率，单位为 Hz。
+  rolling_window: true  # 启用滚动窗口，即地图随机器人移动而更新，而不是固定在地图上的一个区域。
+  width: 5.5  # 局部代价地图的宽度，单位为米。
+  height: 5.5  # 局部代价地图的高度，单位为米。
+  resolution: 0.1  # 局部代价地图的分辨率，每个栅格的大小，单位为米。
+  transform_tolerance: 0.5  # 变换的容忍度，单位为秒，表示在时间同步时的容忍范围。
+  
+  plugins:
+    - {name: static_layer,        type: "costmap_2d::StaticLayer"}  # 使用静态层插件，加载静态地图信息。
+    - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"} # 使用障碍层插件，处理传感器提供的障碍物信息。

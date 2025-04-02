@@ -1,0 +1,12 @@
+<launch>
+
+    <!-- 参数内容 -->
+    <rosparam command="load" file="$(find control)/config/vehicleParams.yaml"/>
+
+    <!-- 局部控制器 -->
+    <node name="FSM" pkg="control" type="Control_FSM" output="screen" />
+    <!-- can消息反馈 -->
+    <node pkg="control" type="can_feedback" name="can_feedback" />
+    <node pkg="control" type="can_pub" name="can_pub" />
+
+</launch>

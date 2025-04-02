@@ -1,0 +1,12 @@
+<launch>
+
+	<arg name="config_file" value="smart_control_config1.yaml"/>
+	<rosparam file="$(find clamp_fork)/config/$(arg config_file)" command="load"/>
+  <!-- 启动控制器管理器 -->
+  <node name="controller_manager" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" args="joint_state_controller rear_right_velocity_controller rear_left_velocity_controller front_right_steering_position_controller front_left_steering_position_controller
+                 base_link_to_fork_left_horizontal_controller
+                 fork_left_horizontal_to_fork_left_vertical_controller
+                 base_link_to_fork_right_horizontal_controller
+                 fork_right_horizontal_to_fork_right_vertical_controller"/>
+</launch>

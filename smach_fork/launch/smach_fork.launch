@@ -1,0 +1,9 @@
+<launch>
+	<rosparam file="$(find smach_fork)/config/smach.yaml" command="load" />
+
+	<!-- <param name="choose_fsm" value="false" /> -->
+	<node pkg="smach_fork" name="smach_fork_task" type="task_smach.py" output='screen'/>
+
+	<node pkg="smach_fork" name="smach_viewer" type="smach_viewer.py"/>
+
+</launch>

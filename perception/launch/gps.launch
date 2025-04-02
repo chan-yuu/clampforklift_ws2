@@ -1,0 +1,18 @@
+<launch>
+    <node name="gps_imu_node" pkg="perception" type="gps_imu_pub" output="screen">
+        <param name="loopRate" value="100" />
+        <param name="ifname" value="can1" />
+        <param name="global_pos_X" value="0" />
+        <param name="global_pos_Y" value="0" />
+    </node>
+
+    <!-- <param name="init_x" value="0"/>
+    <param name="init_y" value="0"/>
+    <param name="init_z" value="0"/>
+    <param name="init_roll" value="0"/>        
+    <param name="init_pitch" value="0"/>
+    <param name="init_yaw" value="0"/>
+    <node name="tf_odom_publisher" pkg="perception" type="tf_odom_publisher" output="screen">
+    </node> -->
+
+</launch>
